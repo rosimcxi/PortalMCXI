@@ -1,0 +1,100 @@
+name: PortalMCXI backend baseline
+
+on:
+  push:
+    branches:
+      - "work/backend-baseline-and-infohub-v1"
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-baseline.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-baseline.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Exact source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SOURCE_SHA=$GITHUB_SHA"
+          echo "CHECKED_OUT_SHA=$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build backend
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build             backend/PortalMCXIBackend/PortalMCXIBackend.csproj             -c Release             --nologo
+
+      - name: Smoke backend routes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          log="$RUNNER_TEMP/portal-api.log"
+
+          dotnet run             --project backend/PortalMCXIBackend/PortalMCXIBackend.csproj             -c Release             --no-build             --urls http://127.0.0.1:5099             >"$log" 2>&1 &
+
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+
+          ready=0
+
+          for _ in $(seq 1 30); do
+            if curl -fsS               http://127.0.0.1:5099/               >/tmp/root.txt; then
+              ready=1
+              break
+            fi
+
+            sleep 1
+          done
+
+          if [[ "$ready" -ne 1 ]]; then
+            cat "$log"
+            exit 20
+          fi
+
+          grep -F "PortalMCXI API is running" /tmp/root.txt
+
+          curl -fsS             "http://127.0.0.1:5099/system"             >/tmp/system.json
+
+          curl -fsS             "http://127.0.0.1:5099/api/esoterika/kondiciogram?birthDateStr=2000-01-01"             >/tmp/kondiciogram.json
+
+          curl -fsS             "http://127.0.0.1:5099/api/casna/dashboard"             >/tmp/casna.json
+
+          python3 - <<'PY'
+          import json
+
+          system = json.load(open("/tmp/system.json", encoding="utf-8"))
+          kond = json.load(open("/tmp/kondiciogram.json", encoding="utf-8"))
+          casna = json.load(open("/tmp/casna.json", encoding="utf-8"))
+
+          assert system["status"] == "Online"
+          assert isinstance(kond["physical"], (int, float))
+          assert isinstance(casna["projects"], list)
+          assert isinstance(casna["tasks"], list)
+
+          print("BACKEND_BUILD=PASS")
+          print("BACKEND_SMOKE=PASS")
+          print("RFU_CAPACITY_USED=NO")
+          print("CONTABO_MUTATION=NO")
+          PY
