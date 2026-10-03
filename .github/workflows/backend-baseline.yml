@@ -54,6 +54,7 @@ jobs:
           PORTAL_LOCATION_LAT: "50.0755"
           PORTAL_LOCATION_LON: "14.4378"
           PORTAL_TIMEZONE: "Europe/Prague"
+          PORTAL_BIRTH_DATE: "2000-01-01"
         run: |
           set -euo pipefail
 
@@ -110,6 +111,11 @@ jobs:
               assert morning["weather"]["source"] == "Open-Meteo"
           if morning["sun"] is not None:
               assert morning["sun"]["source"] == "Open-Meteo"
+          if morning["personal"] is not None:
+              assert morning["personal"]["tatva"] is not None
+              assert morning["personal"]["numerology"] is not None
+              assert morning["personal"]["biorhythm"] is not None
+              assert morning["personal"]["status"] == "OK"
 
           print("BACKEND_BUILD=PASS")
           print("BACKEND_SMOKE=PASS")

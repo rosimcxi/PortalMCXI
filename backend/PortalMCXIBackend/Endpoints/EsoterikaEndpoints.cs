@@ -1,4 +1,4 @@
-using PortalMCXIBackend.Models;
+using PortalMCXIBackend.Services;
 
 namespace PortalMCXIBackend.Endpoints;
 
@@ -8,120 +8,59 @@ public static class EsoterikaEndpoints
     {
         var group = app.MapGroup("/api/esoterika");
 
-        group.MapGet("/tatvy", () =>
+        group.MapGet("/tatvy", async (
+            MorningInfoService morningInfo,
+            CancellationToken cancellationToken) =>
         {
-            var now = DateTime.Now;
-            var sunrise = new DateTime(
-                now.Year,
-                now.Month,
-                now.Day,
-                6,
-                0,
-                0);
+            var morning = await morningInfo.GetAsync(cancellationToken);
 
-            if (now < sunrise)
+            if (morning.Personal?.Tatva is null)
             {
-                sunrise = sunrise.AddDays(-1);
+                return Results.Problem(
+                    title: "Tatvy nejsou dostupné",
+                    detail: string.Join("; ", morning.Errors),
+                    statusCode: StatusCodes.Status503ServiceUnavailable);
             }
 
-            var tatvyList = new[]
-            {
-                ("Akáša", "Prostor/Éter", "Černá/Tmavě modrá"),
-                ("Váju", "Vzduch", "Zelená/Modrá"),
-                ("Tédžas", "Oheň", "Červená"),
-                ("Prithví", "Země", "Žlutá"),
-                ("Ápas", "Voda", "Stříbrná/Bílá")
-            };
-
-            var minutesSinceSunrise = (now - sunrise).TotalMinutes;
-            var tatvaIndex =
-                (int)Math.Floor(minutesSinceSunrise / 24) % 5;
-
-            var currentTatva = tatvyList[tatvaIndex];
-            var nextChange = sunrise.AddMinutes(
-                Math.Ceiling(minutesSinceSunrise / 24) * 24);
-
-            return Results.Ok(new TatvaInfo(
-                currentTatva.Item1,
-                currentTatva.Item2,
-                currentTatva.Item3,
-                nextChange.ToString("HH:mm")));
+            return Results.Ok(morning.Personal.Tatva);
         })
         .WithName("GetTatvy");
 
-        group.MapGet("/numerologie", (string birthDateStr) =>
+        group.MapGet("/numerologie", (
+            string birthDateStr,
+            PersonalCalculationService calculations) =>
         {
-            if (!DateTime.TryParse(
-                    birthDateStr,
-                    out var birthDate))
+            if (!DateOnly.TryParse(birthDateStr, out var birthDate))
             {
                 return Results.BadRequest(
                     "Neplatný formát data. Použijte RRRR-MM-DD.");
             }
 
-            static int SumDigits(int number) =>
-                number == 0
-                    ? 0
-                    : number % 10 + SumDigits(number / 10);
+            var today = DateOnly.FromDateTime(DateTime.Today);
 
-            static int ReduceToSingleDigit(int number)
-            {
-                while (number > 9 &&
-                       number != 11 &&
-                       number != 22 &&
-                       number != 33)
-                {
-                    number = SumDigits(number);
-                }
-
-                return number;
-            }
-
-            var lifeNumberRaw =
-                SumDigits(birthDate.Year) +
-                SumDigits(birthDate.Month) +
-                SumDigits(birthDate.Day);
-
-            var lifeNumber =
-                ReduceToSingleDigit(lifeNumberRaw);
-
-            var currentYearRaw =
-                SumDigits(DateTime.Now.Year) +
-                SumDigits(birthDate.Month) +
-                SumDigits(birthDate.Day);
-
-            var personalYear =
-                ReduceToSingleDigit(currentYearRaw);
-
-            return Results.Ok(new NumerologieResult(
-                lifeNumber,
-                personalYear,
-                $"Tvé životní číslo je {lifeNumber}. " +
-                "Detailní text z databáze dodáme později."));
+            return Results.Ok(
+                calculations.CalculateNumerology(
+                    birthDate,
+                    today));
         })
         .WithName("GetNumerologie");
 
-        group.MapGet("/kondiciogram", (string birthDateStr) =>
+        group.MapGet("/kondiciogram", (
+            string birthDateStr,
+            PersonalCalculationService calculations) =>
         {
-            if (!DateTime.TryParse(
-                    birthDateStr,
-                    out var birthDate))
+            if (!DateOnly.TryParse(birthDateStr, out var birthDate))
             {
                 return Results.BadRequest(
                     "Neplatný formát data. Použijte RRRR-MM-DD.");
             }
 
-            var daysAlive =
-                (DateTime.Now - birthDate).TotalDays;
+            var today = DateOnly.FromDateTime(DateTime.Today);
 
-            double CalcBiorhythm(double cycleDays) =>
-                Math.Sin(
-                    (2 * Math.PI * daysAlive) / cycleDays) * 100;
-
-            return Results.Ok(new KondiciogramResult(
-                Math.Round(CalcBiorhythm(23), 1),
-                Math.Round(CalcBiorhythm(28), 1),
-                Math.Round(CalcBiorhythm(33), 1)));
+            return Results.Ok(
+                calculations.CalculateBiorhythm(
+                    birthDate,
+                    today));
         })
         .WithName("GetKondiciogram");
     }

@@ -4,7 +4,9 @@ using PortalMCXIBackend.Models;
 
 namespace PortalMCXIBackend.Services;
 
-public sealed class MorningInfoService(HttpClient httpClient)
+public sealed class MorningInfoService(
+    HttpClient httpClient,
+    PersonalCalculationService personalCalculations)
 {
     private const string CnbRatesUrl =
         "https://www.cnb.cz/en/financial-markets/foreign-exchange-market/" +
@@ -37,10 +39,12 @@ public sealed class MorningInfoService(HttpClient httpClient)
         SunSnapshot? sun = null;
         FinanceSnapshot? finance = null;
         MetalsSnapshot? metals = null;
+        PersonalSnapshot? personal = null;
+        DateTime? latestSunrise = null;
 
         if (latitude is not null && longitude is not null)
         {
-            (weather, sun) = await LoadWeatherAsync(
+            (weather, sun, latestSunrise) = await LoadWeatherAsync(
                 latitude.Value,
                 longitude.Value,
                 timezone,
@@ -66,6 +70,11 @@ public sealed class MorningInfoService(HttpClient httpClient)
             errors.Add("Kovy nelze převést do CZK bez USD/CZK.");
         }
 
+        personal = BuildPersonalSnapshot(
+            latestSunrise,
+            timezone,
+            errors);
+
         var status =
             errors.Count == 0
                 ? "OK"
@@ -85,11 +94,84 @@ public sealed class MorningInfoService(HttpClient httpClient)
             Sun: sun,
             Finance: finance,
             Metals: metals,
+            Personal: personal,
             OverallStatus: status,
             Errors: errors.ToArray());
     }
 
-    private async Task<(WeatherSnapshot? Weather, SunSnapshot? Sun)> LoadWeatherAsync(
+    private PersonalSnapshot? BuildPersonalSnapshot(
+        DateTime? latestSunrise,
+        string timezone,
+        List<string> errors)
+    {
+        DateTime localNow;
+
+        try
+        {
+            var zone = TimeZoneInfo.FindSystemTimeZoneById(timezone);
+            localNow = TimeZoneInfo.ConvertTime(
+                DateTimeOffset.UtcNow,
+                zone).DateTime;
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            errors.Add($"Timezone '{timezone}' není na serveru dostupná.");
+            return null;
+        }
+
+        TatvaInfo? tatva = null;
+
+        if (latestSunrise is not null)
+        {
+            tatva = personalCalculations.CalculateTatva(
+                localNow,
+                latestSunrise.Value);
+        }
+        else
+        {
+            errors.Add("Tatvy nelze spočítat bez skutečného sunrise.");
+        }
+
+        NumerologieResult? numerology = null;
+        KondiciogramResult? biorhythm = null;
+
+        var birthDateText =
+            Environment.GetEnvironmentVariable("PORTAL_BIRTH_DATE");
+
+        if (DateOnly.TryParse(birthDateText, out var birthDate))
+        {
+            var localDate = DateOnly.FromDateTime(localNow);
+
+            numerology =
+                personalCalculations.CalculateNumerology(
+                    birthDate,
+                    localDate);
+
+            biorhythm =
+                personalCalculations.CalculateBiorhythm(
+                    birthDate,
+                    localDate);
+        }
+        else
+        {
+            errors.Add("PORTAL_BIRTH_DATE není nakonfigurován.");
+        }
+
+        return new PersonalSnapshot(
+            Tatva: tatva,
+            Numerology: numerology,
+            Biorhythm: biorhythm,
+            Status:
+                tatva is not null &&
+                numerology is not null &&
+                biorhythm is not null
+                    ? "OK"
+                    : "PARTIAL",
+            Note:
+                "Numerologie, tatvy a kondiciogram jsou osobní/esoterické výpočty, ne vědecká zdravotní diagnostika.");
+    }
+
+    private async Task<(WeatherSnapshot? Weather, SunSnapshot? Sun, DateTime? LatestSunrise)> LoadWeatherAsync(
         double latitude,
         double longitude,
         string timezone,
@@ -103,6 +185,7 @@ public sealed class MorningInfoService(HttpClient httpClient)
             "&current=temperature_2m,apparent_temperature,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_gusts_10m" +
             "&daily=sunrise,sunset,daylight_duration" +
             $"&timezone={Uri.EscapeDataString(timezone)}" +
+            "&past_days=1" +
             "&forecast_days=1";
 
         try
@@ -130,15 +213,45 @@ public sealed class MorningInfoService(HttpClient httpClient)
                 current.GetProperty("wind_gusts_10m").GetDouble(),
                 "OK");
 
+            var times = daily.GetProperty("time");
+            var sunrises = daily.GetProperty("sunrise");
+            var sunsets = daily.GetProperty("sunset");
+            var daylight = daily.GetProperty("daylight_duration");
+
+            var todayIndex = times.GetArrayLength() - 1;
+
             var sun = new SunSnapshot(
                 "Open-Meteo",
-                daily.GetProperty("time")[0].GetString(),
-                daily.GetProperty("sunrise")[0].GetString(),
-                daily.GetProperty("sunset")[0].GetString(),
-                Math.Round(daily.GetProperty("daylight_duration")[0].GetDouble() / 60d, 1),
+                times[todayIndex].GetString(),
+                sunrises[todayIndex].GetString(),
+                sunsets[todayIndex].GetString(),
+                Math.Round(daylight[todayIndex].GetDouble() / 60d, 1),
                 "OK");
 
-            return (weather, sun);
+            var zone = TimeZoneInfo.FindSystemTimeZoneById(timezone);
+            var localNow = TimeZoneInfo.ConvertTime(
+                DateTimeOffset.UtcNow,
+                zone).DateTime;
+
+            DateTime? latestSunrise = null;
+
+            for (var index = 0; index < sunrises.GetArrayLength(); index++)
+            {
+                var text = sunrises[index].GetString();
+
+                if (DateTime.TryParse(
+                        text,
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out var candidate) &&
+                    candidate <= localNow &&
+                    (latestSunrise is null || candidate > latestSunrise))
+                {
+                    latestSunrise = candidate;
+                }
+            }
+
+            return (weather, sun, latestSunrise);
         }
         catch (Exception ex) when (
             ex is HttpRequestException or
@@ -147,7 +260,7 @@ public sealed class MorningInfoService(HttpClient httpClient)
             InvalidOperationException)
         {
             errors.Add($"Open-Meteo: {ex.GetType().Name}: {ex.Message}");
-            return (null, null);
+            return (null, null, null);
         }
     }
 

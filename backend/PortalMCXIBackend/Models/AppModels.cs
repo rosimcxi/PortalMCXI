@@ -36,7 +36,8 @@ public record SunSnapshot(string Source, string? Date, string? Sunrise, string? 
 public record FinanceSnapshot(string Source, string RateDate, double UsdCzk, double EurCzk, string Status);
 public record MetalPrice(string Symbol, string Name, string? SourceUpdatedAt, double UsdPerTroyOunce, double UsdPerGram, double CzkPerGram);
 public record MetalsSnapshot(string Source, MetalPrice Gold, MetalPrice Silver, string Status, string Note);
-public record MorningInfoResponse(DateTimeOffset GeneratedAtUtc, MorningLocation Location, WeatherSnapshot? Weather, SunSnapshot? Sun, FinanceSnapshot? Finance, MetalsSnapshot? Metals, string OverallStatus, string[] Errors);
+public record PersonalSnapshot(TatvaInfo? Tatva, NumerologieResult? Numerology, KondiciogramResult? Biorhythm, string Status, string Note);
+public record MorningInfoResponse(DateTimeOffset GeneratedAtUtc, MorningLocation Location, WeatherSnapshot? Weather, SunSnapshot? Sun, FinanceSnapshot? Finance, MetalsSnapshot? Metals, PersonalSnapshot? Personal, string OverallStatus, string[] Errors);
 
 [JsonSerializable(typeof(SystemStatus))]
 [JsonSerializable(typeof(DashboardStats))]
@@ -81,6 +82,7 @@ public record MorningInfoResponse(DateTimeOffset GeneratedAtUtc, MorningLocation
 [JsonSerializable(typeof(FinanceSnapshot))]
 [JsonSerializable(typeof(MetalPrice))]
 [JsonSerializable(typeof(MetalsSnapshot))]
+[JsonSerializable(typeof(PersonalSnapshot))]
 [JsonSerializable(typeof(MorningInfoResponse))]
 [JsonSerializable(typeof(string))]
 [JsonSerializable(typeof(string[]))]

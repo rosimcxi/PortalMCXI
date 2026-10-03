@@ -32,6 +32,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSingleton<PersonalCalculationService>();
 builder.Services.AddHttpClient<MorningInfoService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(8);
