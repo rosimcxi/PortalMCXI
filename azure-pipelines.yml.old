@@ -1,0 +1,111 @@
+# Soubor:   azure-pipelines.yml
+# Autor:    Ing. Roman Fišer
+# Verze:    v20.0 (Final Stable Deploy)
+# Popis:    CI/CD pro PortalMCXI s explicitní Linux kompilací a auto-restartem.
+# ==============================================================================
+
+trigger:
+  branches:
+    include: ['*']
+  paths:
+    include: ['frontend/*', 'backend/*', 'azure-pipelines.yml']
+
+pool:
+  name: 'Contabo'
+
+variables:
+  buildConfiguration: 'Release'
+  sshConnection: 'ContaboVPS' 
+  backendProject: '**/PortalMCXIBackend.csproj'
+
+stages:
+# --- FRONTEND ---
+- stage: Frontend_Track
+  displayName: '🌐 Frontend'
+  jobs:
+  - job: FrontendJob
+    steps:
+    - script: |
+        cd frontend
+        npm install
+        npm run build
+      displayName: 'Build React'
+    - task: CopyFilesOverSSH@0
+      displayName: 'Deploy Web'
+      inputs:
+        sshEndpoint: $(sshConnection)
+        sourceFolder: 'frontend/dist'
+        contents: '**'
+        targetFolder: '/var/www/portalmcxi/frontend'
+        cleanTargetFolder: true
+
+# --- BACKEND ---
+- stage: Backend_Track
+  displayName: '⚙️ Backend'
+  jobs:
+  - job: BackendJob
+    steps:
+    - task: UseDotNet@2
+      displayName: 'SDK .NET 10'
+      inputs:
+        packageType: 'sdk'
+        version: '10.x'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish API (Linux Binary)'
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '$(backendProject)'
+        # Explicitně kompilujeme pro Linux x64 (tím vznikne soubor PortalMCXIBackend bez přípony)
+        arguments: '-c $(buildConfiguration) -r linux-x64 --self-contained false -o $(Build.ArtifactStagingDirectory)/backend'
+        zipAfterPublish: false
+
+    - task: SSH@0
+      displayName: 'Pre-Deploy Cleanup'
+      inputs:
+        sshEndpoint: $(sshConnection)
+        runOptions: 'inline'
+        inline: |
+          sudo systemctl stop portalmcxi.service || true
+          # Kompletní vyčištění starých souborů, aby se nepletly
+          sudo find /var/www/portalmcxi/api/ -mindepth 1 -delete
+
+    - task: CopyFilesOverSSH@0
+      displayName: 'Deploy Binaries'
+      inputs:
+        sshEndpoint: $(sshConnection)
+        sourceFolder: '$(Build.ArtifactStagingDirectory)/backend'
+        contents: '**'
+        targetFolder: '/var/www/portalmcxi/api'
+
+    - task: SSH@0
+      displayName: 'Finalize & Restart'
+      inputs:
+        sshEndpoint: $(sshConnection)
+        runOptions: 'inline'
+        inline: |
+          # 1. Pokud by Azure z nějakého důvodu vytvořil podsložku, hned to narovnáme
+          if [ -d "/var/www/portalmcxi/api/PortalMCXIBackend" ]; then
+              mv /var/www/portalmcxi/api/PortalMCXIBackend/* /var/www/portalmcxi/api/ 2>/dev/null
+              rm -rf /var/www/portalmcxi/api/PortalMCXIBackend
+          fi
+          
+          # 2. Vytvoření nasazovacích metadat pro React Dashboard
+          DEPLOY_DATE=$(date +"%Y-%m-%d %H:%M:%S")
+          echo "{\"buildId\":\"$(Build.BuildId)\", \"commit\":\"$(Build.SourceVersion)\", \"date\":\"$DEPLOY_DATE\"}" > /var/www/portalmcxi/api/deploy-info.json
+          
+          # 3. Spuštění tvého diagnostického a opravného skriptu (Verze 3.2)
+          # Tento skript si sám najde binárku, nastaví práva a zapne service!
+          if [ -f "/root/PortalOpravy.sh" ]; then
+              echo "🚀 Spouštím PortalOpravy.sh..."
+              sudo /root/PortalOpravy.sh
+          else
+              echo "⚠️ Skript PortalOpravy.sh nenalezen. Provádím standardní restart..."
+              sudo chmod +x /var/www/portalmcxi/api/PortalMCXIBackend 2>/dev/null
+              sudo systemctl daemon-reload
+              sudo systemctl start portalmcxi.service
+              sudo systemctl restart nginx
+          fi
+          
+          echo "✅ Nasazení v20.0 dokončeno: $DEPLOY_DATE"

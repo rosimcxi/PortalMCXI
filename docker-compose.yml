@@ -1,0 +1,71 @@
+# =====================================================================
+# SOUBOR:   docker-compose.yml
+# VERZE:    v3.25
+# POPIS:    Opravená produkční verze. API ignoruje "dotnet run" a 
+#           staví se čistě přes náš inteligentní Dockerfile.
+# =====================================================================
+
+services:
+  # Databáze pro portál
+  db:
+    image: postgres:16-alpine
+    container_name: portal_db
+    restart: always
+    environment:
+      POSTGRES_USER: roman_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Nastavte DB_PASSWORD v soukromem prostredi}
+      POSTGRES_DB: portal_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - portal_network
+
+  # Backend - .NET 10 API (Produkční sestavení)
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: portal_api
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - db
+    networks:
+      - portal_network
+      - npm_network
+
+  # Frontend - React / Vite
+  frontend:
+    image: node:20-alpine
+    container_name: portal_frontend
+    restart: always
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+      - HOST=0.0.0.0
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - api
+    networks:
+      - portal_network
+      - npm_network
+
+volumes:
+  db_data:
+
+networks:
+  portal_network:
+    driver: bridge
+  npm_network:
+    name: nginx-proxy-manager_default
+    external: true

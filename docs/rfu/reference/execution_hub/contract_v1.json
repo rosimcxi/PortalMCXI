@@ -1,0 +1,29 @@
+{
+  "schema": "rfu.execution-hub/1",
+  "node": {
+    "required": ["node_id", "online", "capabilities", "max_concurrency", "current_load", "cost_class", "trust_profile", "last_seen_at"]
+  },
+  "request": {
+    "required": ["request_id", "work_id", "executor_kind", "capabilities_required", "trust_profile", "cost_ceiling", "result_destination", "status"],
+    "executor_kind": ["AUTO", "LOCAL_WSL", "COPILOT", "OPENWEBUI", "MAXMAX", "GEMINI", "CHATGPT_SOL", "CHATGPT_PRO", "ASTRA"],
+    "status": ["QUEUED", "DISPATCHED", "RUNNING", "BLOCKED", "DONE", "FAILED", "WAITING_CAPACITY"]
+  },
+  "result": {
+    "required": ["request_id", "executor_kind", "executor_id", "status", "started_at", "finished_at", "result_refs", "cost_class", "evidence"]
+  },
+  "routing": {
+    "policy": "CHEAPEST_CAPABLE_FIRST",
+    "deterministic_first": true,
+    "astra_api_required": false,
+    "fallback_order": ["LOCAL_WSL", "OPENWEBUI", "MAXMAX", "GEMINI", "COPILOT", "CHATGPT_SOL", "CHATGPT_PRO", "ASTRA"],
+    "astra_required_isolation": true
+  },
+  "safety": {
+    "arbitrary_shell_from_remote_queue": false,
+    "secret_values_in_queue": false,
+    "write_capable_autonomous_ai_requires_fencing": [51, 170],
+    "accepted_mutation": "HUMAN_ONLY",
+    "tested_target": "REAL_EVIDENCE_ONLY"
+  }
+}
+

@@ -1,0 +1,22 @@
+{
+  "backend/Models/AppModels.cs": {
+    "header": "Soubor: AppModels.cs | Verze: 1.5.0 | Datum: 2026-05-19 | Autor: Roman Fišer\nPopis: Datové modely pro celý systém.\nHistorie: 2026-05-19 Kompletní verze.",
+    "content": "using System.Text.Json.Serialization;\nnamespace PortalMCXIBackend.Models;\n\npublic record SystemStatus(string Status, string OS, string DotnetVersion, DateTime ServerTime, string MachineName);\npublic record ProjectDetail(int Id, string Name, string Description, string Status, DateTime? Deadline, string? Url);\npublic record TatvaInfo(string AktualniTatva, string Element, string Barva, string DalsiZmena);\npublic record MonitoringDashboard(List<ServiceHealth> Services, DbMetrics DbStatus, List<StatusHistoryEvent> History);\n\ninternal partial class AppJsonSerializerContext : JsonSerializerContext { }"
+  },
+  "backend/Endpoints/SpravaProjektuEndpoints.cs": {
+    "header": "Soubor: SpravaProjektuEndpoints.cs | Verze: 1.2.1 | Datum: 2026-05-19 | Autor: Roman Fišer\nPopis: Endpointy pro správu projektů.\nHistorie: 2026-05-19 Vytvořeno pro PortalMCXI.",
+    "content": "using System.Collections.Concurrent;\nusing PortalMCXIBackend.Models;\nnamespace PortalMCXIBackend.Endpoints;\n\npublic static class SpravaProjektuEndpoints {\n    public static void MapSpravaProjektuEndpoints(this WebApplication app) {\n        app.MapGroup(\"/api/projects-management\");\n    }\n}"
+  },
+  "frontend/src/App.jsx": {
+    "header": "Soubor: App.jsx | Verze: 2.4.0 | Datum: 2026-05-19 | Autor: Roman Fišer\nPopis: Root komponenta aplikace.\nHistorie: 2026-05-19 Inicializace.",
+    "content": "import React from 'react';\nexport default function App() {\n    return <div className=\"p-4\">PortalMCXI Dashboard</div>;\n}"
+  },
+  "frontend/src/Esoterika.jsx": {
+    "header": "Soubor: Esoterika.jsx | Verze: 1.3.0 | Datum: 2026-05-19 | Autor: Roman Fišer\nPopis: Modul pro ezoterické výpočty.\nHistorie: 2026-05-19 Přidána Tatva logika.",
+    "content": "import React from 'react';\nexport default function Esoterika() {\n    return <div>Modul Esoterika</div>;\n}"
+  },
+  "frontend/src/Monitoring.jsx": {
+    "header": "Soubor: Monitoring.jsx | Verze: 1.5.0 | Datum: 2026-05-19 | Autor: Roman Fišer\nPopis: Monitorování stavu VPS.\nHistorie: 2026-05-19 Dashboard pro Contabo.",
+    "content": "import React from 'react';\nexport default function Monitoring() {\n    return <div>Stav VPS: 62.84.181.247</div>;\n}"
+  }
+}

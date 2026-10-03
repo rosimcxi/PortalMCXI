@@ -1,0 +1,162 @@
+# =====================================================================
+# SOUBOR:   azure-pipelines.yml
+# PROJEKT:  PortalMCXI
+# VERZE:    v84.0 (Fix Vite Node Modules)
+# ZMĚNA:    2026-05-17
+# AUTOR:    Ing. Roman Fišer
+# POPIS:    Přidáno pročištění Docker volumes pro spolehlivý build frontendu.
+# =====================================================================
+
+trigger:
+  branches:
+    include: ['*']
+
+pool:
+  name: 'Contabo'
+
+variables:
+  sshConnection: 'ContaboVPS' 
+  projectRoot: '/home/roman/portal-mcxi'
+
+stages:
+# --- PARALELNÍ BLOK PRO BUILD ---
+
+- stage: Stage_1_Build_FE
+  displayName: '📦 1. Build: Frontend'
+  dependsOn: [] 
+  jobs:
+  - job: ArchiveFE
+    steps:
+    - bash: mkdir -p $(System.DefaultWorkingDirectory)/personal && touch $(System.DefaultWorkingDirectory)/personal/.keep
+    - publish: $(System.DefaultWorkingDirectory)/frontend
+      artifact: frontend_src
+    - publish: $(System.DefaultWorkingDirectory)/personal
+      artifact: personal_src
+
+- stage: Stage_2_Build_BE
+  displayName: '📦 2. Build: Backend'
+  dependsOn: [] 
+  jobs:
+  - job: ArchiveBE
+    steps:
+    - publish: $(System.DefaultWorkingDirectory)/backend
+      artifact: backend_src
+
+- stage: Stage_3_Build_CFG
+  displayName: '📦 3. Build: Configs'
+  dependsOn: [] 
+  jobs:
+  - job: ArchiveCFG
+    steps:
+    - bash: mkdir -p $(System.DefaultWorkingDirectory)/scripts && touch $(System.DefaultWorkingDirectory)/scripts/.keep
+    - publish: $(System.DefaultWorkingDirectory)/docker-compose.yml
+      artifact: docker_config
+    - publish: $(System.DefaultWorkingDirectory)/scripts
+      artifact: scripts_src
+
+# --- SEKVENČNÍ BLOK PRO DEPLOY ---
+
+- stage: Stage_4_Deploy_Web
+  displayName: '🌐 4. Deploy: Web Hub'
+  dependsOn: 
+    - Stage_1_Build_FE
+    - Stage_3_Build_CFG
+  jobs:
+  - job: SyncWeb
+    steps:
+    - download: current
+    - task: CopyFilesOverSSH@0
+      inputs:
+        sshEndpoint: $(sshConnection)
+        sourceFolder: '$(Pipeline.Workspace)'
+        contents: |
+          frontend_src/**
+          personal_src/**
+          docker_config/**
+        targetFolder: '$(projectRoot)'
+    - task: SSH@0
+      displayName: 'Start Frontend & Personal Web'
+      inputs:
+        sshEndpoint: $(sshConnection)
+        runOptions: 'inline'
+        failOnStdErr: false
+        inline: |
+          cd $(projectRoot)
+          cp -r frontend_src/* frontend/ 2>/dev/null || true
+          cp -r personal_src/* personal/ 2>/dev/null || true
+          cp docker_config/docker-compose.yml . 2>/dev/null || true
+          
+          # Vyčistíme staré lokální balíčky
+          rm -rf $(projectRoot)/frontend/node_modules 2>/dev/null || true
+          
+          # DŮLEŽITÉ: Násilím smažeme starý frontend kontejner i s jeho zkaženou mezipamětí (volume pro node_modules)
+          docker compose rm -s -v -f frontend
+          
+          # Nyní si Frontend natáhne čisté závislosti
+          docker compose up -d frontend
+          docker compose up -d personal_web 2>/dev/null || true
+          
+          echo "✅ Fáze 4 dokončena."
+
+- stage: Stage_5_Deploy_API
+  displayName: '⚙️ 5. Deploy: API & Log'
+  dependsOn: 
+    - Stage_2_Build_BE
+    - Stage_4_Deploy_Web
+  jobs:
+  - job: SyncAPI
+    steps:
+    - download: current
+      artifact: backend_src
+    - task: CopyFilesOverSSH@0
+      inputs:
+        sshEndpoint: $(sshConnection)
+        sourceFolder: '$(Pipeline.Workspace)/backend_src'
+        contents: '**'
+        targetFolder: '$(projectRoot)/backend'
+    - task: SSH@0
+      displayName: 'Start API & Diagnostics'
+      inputs:
+        sshEndpoint: $(sshConnection)
+        runOptions: 'inline'
+        failOnStdErr: false
+        inline: |
+          cd $(projectRoot)
+          mkdir -p $(projectRoot)/frontend/public
+          
+          echo "Sestavuji API a startuji služby..."
+          docker compose build --no-cache api
+          docker compose up -d --force-recreate api
+          
+          sleep 10
+          
+          # Sběr dat pro diagnostiku s fixem na barvičky
+          TIME_NOW=$(date '+%d.%m.%Y %H:%M:%S')
+          DISK=$(df -h / | awk 'NR==2 {print $3 " / " $2 " (" $5 ")"}')
+          RAM=$(free -m | awk '/Mem:/ {print $3 " MB / " $2 " MB"}')
+          DOCKER_PS=$(docker ps --format '{{.Names}}: {{.Status}}' | tr '\n' '|' | sed 's/"/\\"/g')
+          LINUX_PROCS=$(top -b -n 1 | head -n 15 | tr '\n' '|' | sed 's/"/\\"/g' | sed 's/|$//')
+          DOCKER_STATS=$(docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}" | tr '\n' '|' | sed 's/"/\\"/g' | sed 's/|$//')
+          
+          API_LOGS=$(docker logs --tail 30 portal_api 2>&1 | sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' | tr '\n' '|' | sed 's/"/\\"/g' || echo "No logs")
+          NGINX_STATUS=$(docker ps --filter "name=nginx-proxy-manager" --format '{{.Names}}: {{.Status}}' | tr '\n' '|' | sed 's/"/\\"/g')
+          NGINX_TEST=$(docker exec nginx-proxy-manager-app-1 nginx -t 2>&1 | sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' | tr '\n' '|' | sed 's/"/\\"/g' || echo "Test konfigurace se nezdařil")
+          NGINX_LOGS=$(docker logs --tail 30 nginx-proxy-manager-app-1 2>&1 | sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' | tr '\n' '|' | sed 's/"/\\"/g' || echo "Nginx nenalezen")
+          
+          cat <<EOF > $(projectRoot)/frontend/public/build_info.json
+          {
+            "buildTime": "$TIME_NOW",
+            "buildId": "$(Build.BuildId)",
+            "disk": "$DISK",
+            "ram": "$RAM",
+            "docker": "$DOCKER_PS",
+            "linuxProcs": "$LINUX_PROCS",
+            "dockerStats": "$DOCKER_STATS",
+            "apiError": "$API_LOGS",
+            "nginxStatus": "$NGINX_STATUS",
+            "nginxTest": "$NGINX_TEST",
+            "nginxLogs": "$NGINX_LOGS"
+          }
+          EOF
+          
+          echo "✅ Fáze 5 dokončena."

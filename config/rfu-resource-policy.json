@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "PORTALMCXI-RFU-RESOURCE-CAP",
+  "project_id": "PortalMCXI",
+  "decision_source": "Roman / 2026-10-03",
+  "max_resource_share": 0.30,
+  "is_reservation": false,
+  "placement_authority": "RFU_EXECUTION_HUB",
+  "scope": ["DEVELOPMENT", "BUILD", "TEST", "AUDIT", "COLLECTOR", "AI", "DEPLOY", "RETRY"],
+  "required_accounting": ["CPU", "RAM", "GPU_WHEN_USED", "PROVIDER_QUOTA_WHEN_USED"],
+  "required_checks": ["CLAIM_TIME_FRESHNESS_CHECK", "PRE_WRITE_FRESHNESS_CHECK", "PRE_COMMIT_PUSH_APPLY_FRESHNESS_CHECK"],
+  "unknown_capacity_action": "WAITING_CAPACITY",
+  "quota_unverified_action": "DENY_DISPATCH",
+  "runtime_enforcement_status": "PENDING",
+  "runtime_adapter_verified": false
+}

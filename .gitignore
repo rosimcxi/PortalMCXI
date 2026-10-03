@@ -1,0 +1,21 @@
+bin/
+obj/
+node_modules/
+dist/
+.vs/
+.vscode/
+*.user
+appsettings.Development.json
+
+# Soukromá konfigurace a přístupové údaje
+.env
+.env.*
+!.env.example
+PortalMCXI.env
+Token*.txt
+mackey.txt
+*.pem
+*.key
+*.pfx
+*.p12
+*.lscache

@@ -1,0 +1,43 @@
+{
+  "schema": "rfu.execution-hub.local-ci-policy/1",
+  "preferred_executor": "LOCAL_WSL",
+  "node_id": "brnw11fiser",
+  "job_classes": ["BUILD","UNIT_TEST","PACKAGE_TEST","READONLY_DIAGNOSTIC","COMPARE","EXPORT","ARTIFACT_PUBLISH"],
+  "execution": {
+    "canonical_repo_mutation": "FORBIDDEN",
+    "worktree_mode": "DISPOSABLE_ISOLATED",
+    "arbitrary_remote_shell": "FORBIDDEN",
+    "source_db_write": "FORBIDDEN_BY_DEFAULT",
+    "max_concurrency_default": 2
+  },
+  "routing": {
+    "cheapest_capable_first": true,
+    "local_when_online": true,
+    "copilot_for_repo_coding": true,
+    "cloud_fallback_when_local_offline": true,
+    "hpa_mode": "NORMAL",
+    "reserved_precheck_order": ["URGENT","SEN"],
+    "recheck_required_after_normal_job": true,
+    "preempt_check_seconds": 60,
+    "preempt_safe_remaining_threshold_seconds": 300,
+    "no_parallel_scheduler": true,
+    "execution_hub_issue": 207,
+    "live_node_truth_issue": 272,
+    "expired_reservation_issue": 284,
+    "expired_reservation_valid_until": "2026-09-24T23:59:59+02:00"
+  },
+  "artifact_store": {
+    "preferred": "ONEDRIVE_OR_SHAREPOINT",
+    "role": "ARTIFACT_EVIDENCE_HISTORY_ONLY",
+    "secrets_allowed": false,
+    "secret_refs_only": true
+  },
+  "azure": {"role": "OPTIONAL_24X7_FALLBACK", "required_for_v1": false},
+  "governance": {
+    "automatic_release": false,
+    "accepted": "UNCHANGED",
+    "tested_target": "REAL_EVIDENCE_ONLY",
+    "write_capable_ai_gate": "#51/#170"
+  }
+}
+

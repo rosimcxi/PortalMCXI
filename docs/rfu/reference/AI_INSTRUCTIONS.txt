@@ -1,0 +1,25 @@
+RFUTIL 10 AI CONTEXT RULES
+Version: 10.0.20
+Updated: 2026-09-25T09:13:00+02:00
+
+Canonical work/change unit: Puzzle.
+Reusable knowledge/code pattern: Snippet.
+Operational reusable procedure: Playbook.
+Real non-development work: Work Task / Úkol.
+Executable capability: Function/version in System registry.
+
+For AI handoff prefer the smallest relevant Puzzle context plus required Snippets and current Function contracts.
+Use `rfu export-ai --next` for dependency/priority-driven continuation and `rfu puzzle context ID` for a compact Puzzle view.
+Never infer ACCEPTED/TESTED_TARGET without explicit evidence.
+
+
+Communication governance (APPROVED 2026-09-25):
+- RFU_RIDICI_PREHLED.md section "Rizeni komunikace a pokracovani prace" governs HUMAN-FACING outputs (chat, console/CLI, Web/UI).
+- Do NOT inject human choice formatting into internal AI-to-AI prompts.
+- AI-to-AI continuation should prefer the smallest machine handoff: RUN_ID, PARENT_RUN_ID, STATUS, RC, BLOCKERS, NEXT_ACTION, SOURCE_SHA, ARTIFACT/EVIDENCE and DEPENDENCIES.
+- Reuse exact NEXT_ACTION and evidence instead of repeating full conversational context whenever possible.
+- Human-facing output should end with a short proposed next step; number meaningful alternatives and, when appropriate, include one final/closing option.
+- Do not invent artificial alternatives when one safe obvious next step exists.
+- Separate decisions that truly require the user from work that can safely continue automatically.
+- Preserve previously approved content during iterative refinement unless the new instruction explicitly changes it.
+

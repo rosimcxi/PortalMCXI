@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "authority_issue": 6,
+  "authority_repair_issue": 237,
+  "architecture_issue": 145,
+  "runtime_package_count": 7,
+  "repeat_failure_threshold": 2,
+  "blind_rerun_after_threshold": false,
+  "manual_test_when_automation_context_unproven": true,
+  "newer_exact_success_supersedes_old_failure_for_current_priority": true,
+  "historical_failure_evidence_immutable": true,
+  "failure_classes": [
+    "IMPLEMENTATION_DEFECT",
+    "TEST_DEFECT_OR_STALE_EXPECTATION",
+    "TEST_APPROACH_UNSUITABLE",
+    "ACCESS_OR_AUTHORIZATION",
+    "ENVIRONMENT_OR_DEPENDENCY",
+    "TARGET_UNAVAILABLE_OR_WRONG_TARGET",
+    "SOURCE_OR_INSTALL_MISMATCH",
+    "CI_OR_RUNNER_INFRASTRUCTURE",
+    "UNKNOWN_REQUIRES_REVIEW"
+  ],
+  "required_review_fields": [
+    "FAILURE_FINGERPRINT",
+    "FAILURE_CLASS",
+    "TEST_VALIDITY",
+    "ENV_VALIDITY",
+    "ACCESS_VALIDITY",
+    "TARGET_VALIDITY",
+    "AUTO_RERUN_ALLOWED",
+    "MANUAL_TEST_REQUIRED",
+    "NEXT_ACTION"
+  ],
+  "suitability_checks": [
+    "SOURCE_BRANCH_REF_SHA",
+    "PACKAGE_FUNCTION_VERSION",
+    "CURRENT_TEST_CONTRACT",
+    "CANONICAL_USER_ENTRYPOINT",
+    "CURRENT_PARAMETERS_ALIASES",
+    "RUNNER_OS_RUNTIME",
+    "DEPENDENCIES_SERVICES_PORTS",
+    "TARGET_PROFILE_DATABASE_ELIGIBILITY",
+    "ACCESS_POLICY_AND_SECRET_REFS",
+    "READ_ONLY_WRITE_MODE",
+    "FIXTURE_DATA_CURRENCY",
+    "EXPECTED_RESULT_CURRENT_ARCHITECTURE",
+    "PACKAGE_LOCAL_SCOPE",
+    "TRANSIENT_CI_INFRASTRUCTURE",
+    "NEWER_SUCCESS_SUPERSESSION"
+  ],
+  "manual_test_triggers": [
+    "REPEATED_UNPROVEN_FAILURE",
+    "REAL_TARGET_NOT_AVAILABLE_IN_CI",
+    "ACCESS_CONTEXT_DIFFERS_FROM_CI",
+    "WSL_WINDOWS_DB_SERVICE_ENVIRONMENT_REQUIRED",
+    "TIMEOUT_OR_RUNNER_FAILURE_WITHOUT_FUNCTIONAL_VERDICT",
+    "STALE_OR_ARCHITECTURE_DEPENDENT_EXPECTATION",
+    "DESTRUCTIVE_TEST_SAFE_ONLY_ON_TEST_SANDBOX",
+    "TESTED_TARGET_REQUIRES_REAL_TARGET_EVIDENCE"
+  ],
+  "forbidden_auto_actions": [
+    "BLIND_RERUN_AFTER_REPEAT_THRESHOLD",
+    "CHANGE_ACC_PROD_ACCESS_TO_MAKE_TEST_PASS",
+    "MARK_IMPLEMENTATION_BROKEN_FROM_UNVALIDATED_TEST",
+    "SET_ACCEPTED",
+    "SET_TESTED_TARGET_WITHOUT_REAL_TARGET_EVIDENCE"
+  ]
+}
+

@@ -1,0 +1,83 @@
+{
+  "source_repository": "rosimcxi/rfu",
+  "source_ref": "a8f25138bc6999c1838c1b4f0e4d76dab03e3cdb",
+  "imported_at": "2026-10-03",
+  "role": "REFERENCE_SNAPSHOT_NOT_RUNTIME_AUTHORITY",
+  "entries": [
+    {
+      "source_path": "PRAVIDLA.md",
+      "source_blob_sha": "9154b57168b4f10a9177604efe98decc781122d4",
+      "target_path": "docs/rfu/reference/PRAVIDLA.md"
+    },
+    {
+      "source_path": "RFU_RIDICI_PREHLED.md",
+      "source_blob_sha": "3fa140fc68d5f2db781b61b9a5ae3ae848f80e14",
+      "target_path": "docs/rfu/reference/RFU_RIDICI_PREHLED.md"
+    },
+    {
+      "source_path": "AI_INSTRUCTIONS.txt",
+      "source_blob_sha": "2d6596770b0147dd0c64fa00b6b6734dc91cf93f",
+      "target_path": "docs/rfu/reference/AI_INSTRUCTIONS.txt"
+    },
+    {
+      "source_path": "DOK/RIDICI/RELEASE_PROMOTION_CONTRACT.md",
+      "source_blob_sha": "2ca8172f92a4ae34521bea190a1e7c33efaa9d7d",
+      "target_path": "docs/rfu/reference/DOK/RIDICI/RELEASE_PROMOTION_CONTRACT.md"
+    },
+    {
+      "source_path": "DOK/RIDICI/RFUTIL_GIT_POLICY.md",
+      "source_blob_sha": "ee6bf43e157fb77ecb73c29c3f79de109d95cb75",
+      "target_path": "docs/rfu/reference/DOK/RIDICI/RFUTIL_GIT_POLICY.md"
+    },
+    {
+      "source_path": "DOK/RIDICI/RFU_CONDUCTOR_SHARED_CONTRACT.md",
+      "source_blob_sha": "f6a85fd15a2554f41a116b4e0fae2b7ca02d59a5",
+      "target_path": "docs/rfu/reference/DOK/RIDICI/RFU_CONDUCTOR_SHARED_CONTRACT.md"
+    },
+    {
+      "source_path": "DOK/RIDICI/RFU_EVIDENCE_RUN_CONTRACT.md",
+      "source_blob_sha": "40e2b83630eb7da9fc318b941ae39c4cb2b7fa4d",
+      "target_path": "docs/rfu/reference/DOK/RIDICI/RFU_EVIDENCE_RUN_CONTRACT.md"
+    },
+    {
+      "source_path": "docs/RFU_GIT_PATH_AUTHORITY.md",
+      "source_blob_sha": "fdec56e0ff61af86fb59442ee73aac371ffffb3a",
+      "target_path": "docs/rfu/reference/docs/RFU_GIT_PATH_AUTHORITY.md"
+    },
+    {
+      "source_path": "docs/governance/RFU10_PUZZLE.md",
+      "source_blob_sha": "5f71fa2fa8898dea124d48145f8edaad3dff8a49",
+      "target_path": "docs/rfu/reference/docs/governance/RFU10_PUZZLE.md"
+    },
+    {
+      "source_path": "execution_hub/contract_v1.json",
+      "source_blob_sha": "74d909c24ba268842b087fc909a6994ad5c37a9f",
+      "target_path": "docs/rfu/reference/execution_hub/contract_v1.json"
+    },
+    {
+      "source_path": "execution_hub/routing_policy_v1.md",
+      "source_blob_sha": "1a46b757c2ade7804da97281493fc86f4cca91e2",
+      "target_path": "docs/rfu/reference/execution_hub/routing_policy_v1.md"
+    },
+    {
+      "source_path": "execution_hub/worker_pool_policy_v1.json",
+      "source_blob_sha": "c81bc6a4ccd423f8aa9cd5a96092b87ef082091a",
+      "target_path": "docs/rfu/reference/execution_hub/worker_pool_policy_v1.json"
+    },
+    {
+      "source_path": "execution_hub/local_ci_policy_v1.json",
+      "source_blob_sha": "875c9908136b042490b0d1b419d2ffaa0e21bdb5",
+      "target_path": "docs/rfu/reference/execution_hub/local_ci_policy_v1.json"
+    },
+    {
+      "source_path": "config/process_coach_test_policy.json",
+      "source_blob_sha": "b93113f7c0fd3bf176ec2d95aacf7b07ffbca77f",
+      "target_path": "docs/rfu/reference/config/process_coach_test_policy.json"
+    },
+    {
+      "source_path": "module_sources/man/docs/cs/90_GOVERNANCE.md",
+      "source_blob_sha": "967a8adac846e04303f89529dd6e018aea30302e",
+      "target_path": "docs/rfu/reference/module_sources/man/docs/cs/90_GOVERNANCE.md"
+    }
+  ]
+}

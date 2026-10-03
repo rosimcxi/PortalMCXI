@@ -1,0 +1,77 @@
+{
+  "schema": "rfu.execution-hub.worker-pool/1",
+  "policy_id": "RFU_MULTI_HW_WORKER_POOL_V1",
+  "mode": "PREPARE_MAX_ASSIGN_DYNAMICALLY",
+  "rules": {
+    "physical_pool": "register/prepare up to hard_max_registered_workers",
+    "active_assignment": "only assign up to effective_worker_limit",
+    "idle_workers": "remain unassigned and consume no RFU job slot",
+    "capacity_budget": "CPU budget after per-node reserved CPUs",
+    "live_throttle": [
+      "CPU_LOAD",
+      "RAM_AVAILABLE",
+      "REGISTERED_WORKERS",
+      "ACTIVE_ASSIGNED_JOBS"
+    ],
+    "future_tuning": [
+      "BENCHMARK_SCORE",
+      "COST_SCORE",
+      "JOB_CPU_POINTS"
+    ],
+    "balance": "FAIR_SPREAD_ROUNDS",
+    "balance_detail": "assign one job to every eligible accepting online node before any node receives a second; repeat by assignment layer",
+    "cost_class": "explicit per-node policy; never inferred by Web from node name"
+  },
+  "nodes": {
+    "HPA": {
+      "hard_max_registered_workers": 4,
+      "reserved_cpus": 2,
+      "assignment_mode": "DYNAMIC",
+      "special": [
+        "SEN",
+        "VPN",
+        "DB"
+      ],
+      "cost_class": "OWNED"
+    },
+    "CONTABO": {
+      "hard_max_registered_workers": 2,
+      "reserved_cpus": 3,
+      "assignment_mode": "DYNAMIC",
+      "resident_services_protected": true,
+      "cost_class": "FIXED"
+    },
+    "MACMAX": {
+      "hard_max_registered_workers": 3,
+      "reserved_cpus": 2,
+      "assignment_mode": "DYNAMIC",
+      "cost_class": "OWNED"
+    },
+    "MACBOOKM2": {
+      "hard_max_registered_workers": 3,
+      "reserved_cpus": 2,
+      "assignment_mode": "DYNAMIC",
+      "cost_class": "OWNED"
+    },
+    "ASUS": {
+      "hard_max_registered_workers": 4,
+      "reserved_cpus": 2,
+      "assignment_mode": "DYNAMIC",
+      "gpu_worker_exclusive": true,
+      "cost_class": "OWNED"
+    },
+    "HPI7": {
+      "hard_max_registered_workers": 2,
+      "reserved_cpus": 2,
+      "assignment_mode": "DYNAMIC",
+      "cost_class": "OWNED"
+    }
+  },
+  "safety": {
+    "db_write_serialized": true,
+    "no_blind_overcommit": true,
+    "accepted": "HUMAN_ONLY",
+    "tested_target": "REAL_EVIDENCE_ONLY"
+  }
+}
+

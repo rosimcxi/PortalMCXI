@@ -1,0 +1,911 @@
+ Volume in drive D is Data
+ Volume Serial Number is 5ECB-D46F
+
+ Directory of d:\GIT\PortalMCXI
+
+15.05.2026  15:34    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  09:51                88 .gitignore
+15.05.2026  15:31             6˙733 azure-pipelines.yml
+15.05.2026  09:51             3˙954 azure-pipelines.yml.old
+15.05.2026  09:51    <DIR>          backend
+15.05.2026  15:37                 0 dir.txt
+15.05.2026  13:13             1˙728 docker-compose.yml
+15.05.2026  12:16    <DIR>          frontend
+15.05.2026  09:51             1˙947 mackey.txt
+15.05.2026  09:51               101 PortalMCXI.env
+15.05.2026  09:51             1˙975 PortalNasazeni.md
+15.05.2026  09:51             2˙305 Postgres_install.sh
+15.05.2026  09:51             6˙734 Projekt_vytvor_adresare.sh
+15.05.2026  09:51            10˙283 README.md
+15.05.2026  09:51    <DIR>          scripts
+15.05.2026  09:51               182 StartPortalMCXI.sh
+15.05.2026  09:51                86 Token.txt
+15.05.2026  09:51                86 Token2.txt
+15.05.2026  09:51             2˙073 zachrana.md
+              15 File(s)         38˙275 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git
+
+15.05.2026  15:34    <DIR>          ..
+15.05.2026  15:32                16 COMMIT_EDITMSG
+15.05.2026  10:07               348 config
+15.05.2026  09:51                73 description
+15.05.2026  15:32               112 FETCH_HEAD
+15.05.2026  09:51                21 HEAD
+15.05.2026  09:51    <DIR>          hooks
+15.05.2026  15:32             4˙013 index
+15.05.2026  09:51    <DIR>          info
+15.05.2026  09:51    <DIR>          logs
+15.05.2026  15:32    <DIR>          objects
+15.05.2026  15:32                41 ORIG_HEAD
+15.05.2026  09:51               112 packed-refs
+15.05.2026  09:51    <DIR>          refs
+               8 File(s)          4˙736 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\hooks
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51               478 applypatch-msg.sample
+15.05.2026  09:51             1˙972 commit-msg.sample
+15.05.2026  09:51             4˙611 fsmonitor-watchman.sample
+15.05.2026  09:51               189 post-update.sample
+15.05.2026  09:51               424 pre-applypatch.sample
+15.05.2026  09:51             1˙649 pre-commit.sample
+15.05.2026  09:51               416 pre-merge-commit.sample
+15.05.2026  09:51             1˙374 pre-push.sample
+15.05.2026  09:51             4˙898 pre-rebase.sample
+15.05.2026  09:51               544 pre-receive.sample
+15.05.2026  09:51             1˙492 prepare-commit-msg.sample
+15.05.2026  09:51             2˙783 push-to-checkout.sample
+15.05.2026  09:51             2˙308 sendemail-validate.sample
+15.05.2026  09:51             3˙650 update.sample
+              14 File(s)         26˙788 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\info
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51               240 exclude
+               1 File(s)            240 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\logs
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  15:32             3˙006 HEAD
+15.05.2026  09:51    <DIR>          refs
+               1 File(s)          3˙006 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\logs\refs
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  09:51    <DIR>          heads
+15.05.2026  09:51    <DIR>          remotes
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\logs\refs\heads
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  15:32             3˙006 main
+               1 File(s)          3˙006 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\logs\refs\remotes
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  10:16    <DIR>          origin
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\logs\refs\remotes\origin
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  09:51               201 HEAD
+15.05.2026  15:32             2˙718 main
+               2 File(s)          2˙919 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  14:14    <DIR>          09
+15.05.2026  14:55    <DIR>          0e
+15.05.2026  15:32    <DIR>          13
+15.05.2026  14:44    <DIR>          15
+15.05.2026  12:19    <DIR>          17
+15.05.2026  10:41    <DIR>          1e
+15.05.2026  13:52    <DIR>          21
+15.05.2026  14:14    <DIR>          23
+15.05.2026  13:13    <DIR>          24
+15.05.2026  13:52    <DIR>          25
+15.05.2026  10:16    <DIR>          27
+15.05.2026  14:03    <DIR>          2b
+15.05.2026  15:10    <DIR>          2c
+15.05.2026  13:07    <DIR>          30
+15.05.2026  13:52    <DIR>          31
+15.05.2026  14:03    <DIR>          35
+15.05.2026  10:41    <DIR>          44
+15.05.2026  15:10    <DIR>          45
+15.05.2026  12:49    <DIR>          46
+15.05.2026  14:44    <DIR>          47
+15.05.2026  12:49    <DIR>          49
+15.05.2026  15:00    <DIR>          4d
+15.05.2026  14:27    <DIR>          57
+15.05.2026  15:32    <DIR>          5c
+15.05.2026  10:41    <DIR>          5e
+15.05.2026  10:41    <DIR>          61
+15.05.2026  14:57    <DIR>          62
+15.05.2026  14:35    <DIR>          64
+15.05.2026  14:44    <DIR>          68
+15.05.2026  14:14    <DIR>          6a
+15.05.2026  12:19    <DIR>          6c
+15.05.2026  15:32    <DIR>          79
+15.05.2026  15:32    <DIR>          7a
+15.05.2026  14:14    <DIR>          87
+15.05.2026  15:10    <DIR>          8a
+15.05.2026  10:16    <DIR>          8b
+15.05.2026  14:23    <DIR>          8e
+15.05.2026  14:55    <DIR>          8f
+15.05.2026  14:03    <DIR>          90
+15.05.2026  14:55    <DIR>          92
+15.05.2026  15:32    <DIR>          9b
+15.05.2026  13:07    <DIR>          9c
+15.05.2026  14:55    <DIR>          9d
+15.05.2026  14:35    <DIR>          a3
+15.05.2026  13:52    <DIR>          a5
+15.05.2026  14:27    <DIR>          ac
+15.05.2026  14:55    <DIR>          b0
+15.05.2026  10:16    <DIR>          b1
+15.05.2026  13:52    <DIR>          b4
+15.05.2026  15:00    <DIR>          bb
+15.05.2026  12:19    <DIR>          be
+15.05.2026  14:57    <DIR>          bf
+15.05.2026  14:44    <DIR>          c1
+15.05.2026  14:23    <DIR>          c3
+15.05.2026  14:23    <DIR>          c4
+15.05.2026  14:55    <DIR>          c7
+15.05.2026  14:44    <DIR>          cb
+15.05.2026  10:16    <DIR>          d2
+15.05.2026  14:27    <DIR>          d4
+15.05.2026  13:07    <DIR>          d6
+15.05.2026  14:03    <DIR>          d8
+15.05.2026  14:57    <DIR>          e6
+15.05.2026  15:32    <DIR>          e8
+15.05.2026  12:19    <DIR>          ec
+15.05.2026  13:13    <DIR>          ed
+15.05.2026  13:52    <DIR>          f0
+15.05.2026  13:07    <DIR>          f1
+15.05.2026  15:32    <DIR>          f2
+15.05.2026  15:32    <DIR>          f4
+15.05.2026  12:19    <DIR>          f5
+15.05.2026  15:00    <DIR>          f7
+15.05.2026  14:35    <DIR>          fa
+15.05.2026  10:16    <DIR>          fd
+15.05.2026  14:27    <DIR>          ff
+15.05.2026  09:51    <DIR>          info
+15.05.2026  09:51    <DIR>          pack
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\09
+
+15.05.2026  14:14    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:14               178 55855c48698564cee5f351eb28cd380be45712
+               1 File(s)            178 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\0e
+
+15.05.2026  14:55    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:55             5˙805 e03dbbf0f1926a5e27c7ba6f66047d2d319f4b
+               1 File(s)          5˙805 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\13
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32                97 28e491ae703a7b87594b56a8e0bf7c8cc1d3d9
+15.05.2026  13:52               914 a9d0f3fdd25b510752260759836c2869627434
+               2 File(s)          1˙011 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\15
+
+15.05.2026  14:44    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:44               653 0764182ee72fbee0b77512ec740682d49fec7b
+               1 File(s)            653 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\17
+
+15.05.2026  12:19    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:19               384 c240aa432b02bc7836b93be667e7160b38fc50
+               1 File(s)            384 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\1e
+
+15.05.2026  10:41    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:41                98 fc40fa81ccd6bb35b243322b2dca5aeec1dfb9
+               1 File(s)             98 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\21
+
+15.05.2026  13:52    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52               384 1b8ea4b36353b3ccab6827ede565806ba75d89
+               1 File(s)            384 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\23
+
+15.05.2026  14:14    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:14               384 55a9be976eb4e5d7ff425b4c8eb46a30890aaa
+               1 File(s)            384 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\24
+
+15.05.2026  13:13    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:13               605 5ee316f911ed8474b2dd5f24a0db30538e45e6
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\25
+
+15.05.2026  13:52    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52                97 846761e74c7b2b14b042b6953e7ba8e882ba6b
+               1 File(s)             97 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\27
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:16                98 a3f51f78f3a6769e5e7c0b44ffcead7dfb8ab5
+               1 File(s)             98 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\2b
+
+15.05.2026  14:03    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:03               605 9c747bd65e29fbfd11237406d0e2f95bc3dbfe
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\2c
+
+15.05.2026  15:10    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:14               139 21e32512742643888409fb56a2b7ee4a6e07e8
+15.05.2026  15:10               604 c6aeb6d920886115d43dd82b8b05441b3ef8e9
+               2 File(s)            743 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\30
+
+15.05.2026  13:07    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:07               111 59f90b700e92fc9f0af0dd19e621546fad6f15
+               1 File(s)            111 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\31
+
+15.05.2026  13:52    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52               605 5f72356e6b32a28ed7c4e1e4109ae9dd74094d
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\35
+
+15.05.2026  14:03    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:03               139 523d4086112a57f0ded1f95647f932d46dca93
+               1 File(s)            139 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\44
+
+15.05.2026  10:41    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:41               513 6648ea9d765df6e621fbfa35a6afb0be853319
+               1 File(s)            513 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\45
+
+15.05.2026  15:10    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:10             1˙992 ded5ae920aad316f2fb74a0b97493a31a5f8ce
+               1 File(s)          1˙992 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\46
+
+15.05.2026  12:49    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:49               111 df2c94d2d962bf5f8d07e27f93ebf6617b35f1
+               1 File(s)            111 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\47
+
+15.05.2026  14:44    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:44               167 8eaefb67cee9f2270f8da88f99a7a88fb465bd
+               1 File(s)            167 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\49
+
+15.05.2026  12:49    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:49               605 984487ff9011b5a5cceb2fb06982481d2881a0
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\4d
+
+15.05.2026  15:00    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:00             2˙112 e55238b50ef098c8a6b17379971f41cdb5c26b
+               1 File(s)          2˙112 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\57
+
+15.05.2026  14:27    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:27               605 bff21f86d329a9e659a5f8998c1083796bbcbf
+15.05.2026  14:23                97 dfe9fa3c5caadda2ceaadceb01f1caa1332207
+               2 File(s)            702 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\5c
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32               384 a070ef2def22c1379e9b51c31f8c249e066f24
+               1 File(s)            384 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\5e
+
+15.05.2026  10:41    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:41               606 a28907857ac9cc9bb87d2f298b757086979a02
+               1 File(s)            606 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\61
+
+15.05.2026  10:41    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:41             2˙232 ed23711627fa35e27acd534bbf54d63d22c338
+               1 File(s)          2˙232 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\62
+
+15.05.2026  14:57    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:57             2˙011 3e3178213198ba3668781dfcf9fbed38ee16d2
+               1 File(s)          2˙011 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\64
+
+15.05.2026  14:35    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:35               605 0ed57f3326ffc2a2e7bf1d91b057c65d467bb8
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\68
+
+15.05.2026  14:44    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:44             1˙497 2bc72125a5cc051378d7053985cbe8086626c1
+               1 File(s)          1˙497 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\6a
+
+15.05.2026  14:14    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:14             1˙499 b46355c1a0f449c010c11523bd5a3a7522cf10
+               1 File(s)          1˙499 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\6c
+
+15.05.2026  12:19    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:19             4˙183 0db297cb9733e3df0b859d7123a9e765fbbed5
+15.05.2026  12:19               176 5fae6fbe24582792b92da26e2ee8ecab075338
+               2 File(s)          4˙359 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\79
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32               174 61c297d8f8d094a48d21bb40a8053d29237891
+15.05.2026  13:07               175 acbceeb89ca4d5cbb5756d45a6cbb8f2379291
+               2 File(s)            349 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\7a
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32               788 165a8b98b1ba7af119682f5062fa7b54654568
+15.05.2026  10:41               268 6a63b595a7d3e70c2019764df54fecb9196bd6
+               2 File(s)          1˙056 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\87
+
+15.05.2026  14:14    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:14               605 1624755a7ca1716a7667f07a985a3cdf071804
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\8a
+
+15.05.2026  15:10    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:10               168 c9dfd37a8329435373aa690eb7c7ac2b9e9833
+               1 File(s)            168 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\8b
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:16             4˙053 ddf36a53f66e1965a8b652d62b43522ee13076
+               1 File(s)          4˙053 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\8e
+
+15.05.2026  14:23    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:23               605 0c26893af727a41b16d42bf0dd6821a384d7c9
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\8f
+
+15.05.2026  14:55    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:14             5˙328 4464740c44f6b9b059edd4a42a6a06c37709bf
+15.05.2026  14:55               139 8ca94e95b89db11e01cd08c48c7b0d41dd40b1
+               2 File(s)          5˙467 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\90
+
+15.05.2026  14:03    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:03             4˙418 42112a94b014c0113ee3908944ffe52c6ef71b
+               1 File(s)          4˙418 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\92
+
+15.05.2026  14:55    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:55             1˙743 26db97c663f64b9a6d75cc5936d1397ff54b77
+               1 File(s)          1˙743 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\9b
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32               605 effb2e8e3469bdcea7d2cb310d298887137d76
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\9c
+
+15.05.2026  13:07    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:07             3˙644 582faf87ed75257bcaa908bcc845a3c0101c3d
+               1 File(s)          3˙644 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\9d
+
+15.05.2026  14:55    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:03               384 6d61a5d87d258486aa919a34c3ea6ae64adffd
+15.05.2026  14:55               166 8528eef1f47dcffa5412dae064407c500400f5
+               2 File(s)            550 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\a3
+
+15.05.2026  14:35    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:35               166 b3c65f149f2b463088c8d8e2053012684dd9c4
+               1 File(s)            166 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\a5
+
+15.05.2026  13:52    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52             2˙577 064b3f6196ee4a4d93d1e3a0804ffd93e94222
+               1 File(s)          2˙577 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\ac
+
+15.05.2026  14:27    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52             1˙417 15f9ae330860a0ff86f79d54341402c77a4df5
+15.05.2026  12:49               175 b51de9c34787cb216c3c7e6b88dc60267ff7ef
+15.05.2026  14:27                97 f2f1fe2538ec127da1fbca14fa6405b7bf6925
+               3 File(s)          1˙689 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\b0
+
+15.05.2026  14:55    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:55               384 0dfce06a6e0f42212a9882098d73364ef86b2f
+               1 File(s)            384 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\b1
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:16               284 f637b8d77652071ec2eeaada3ca09bd83895ec
+               1 File(s)            284 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\b4
+
+15.05.2026  13:52    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52               174 28450f4aab6b0d528b486fb4a29c5c656044bf
+               1 File(s)            174 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\bb
+
+15.05.2026  15:00    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:00               167 d65d08bc7f2fc9349577fc817be52cb08275ff
+               1 File(s)            167 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\be
+
+15.05.2026  12:19    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:19               112 9c5c90c514bedf01c3f3763f2deb97679b307a
+               1 File(s)            112 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\bf
+
+15.05.2026  14:57    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:57               175 46a796de11d58de7d95950841322e9ee1d5437
+15.05.2026  13:13               170 a8440230ec39386198c18ced6e1393c82bde28
+               2 File(s)            345 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\c1
+
+15.05.2026  14:44    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:44               605 15ee40f0093c2391391c8ab8593f5e56cb149d
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\c3
+
+15.05.2026  14:23    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:23               895 5a11187789f119183dfb97f2443f8da9bf1bf8
+               1 File(s)            895 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\c4
+
+15.05.2026  14:23    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:23               172 534392d0b7e9e64fe4b16385ebb870793055d6
+               1 File(s)            172 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\c7
+
+15.05.2026  14:55    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:16               606 7da977de5ed21b039f5af07a359fec5b70e9eb
+15.05.2026  14:55               605 a905c1e8cfd7f8ac89086d73d586fb5a6a5b4e
+15.05.2026  10:41               174 bcb1f9cad20c0c4d95bd1dcf6a36c8a401765c
+               3 File(s)          1˙385 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\cb
+
+15.05.2026  14:44    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:19               605 6a566a5ad2602271e6c0bb37315534cb9948e7
+15.05.2026  14:44                97 d158f5ea95cd1640e5e9f6a85148991e54bbd7
+               2 File(s)            702 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\d2
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:16               268 5812458adaa534f84ec43dab15f3a302581f7b
+               1 File(s)            268 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\d4
+
+15.05.2026  14:27    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:27               611 a7832f035aa14779f57e142f01b3390bd0e3dd
+               1 File(s)            611 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\d6
+
+15.05.2026  13:07    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:07               384 5731bd8d54f2b1eba02975436f535e3726911c
+               1 File(s)            384 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\d8
+
+15.05.2026  14:03    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:03               174 aab73141c16440fb2e914f3a9a7e407cce6d71
+               1 File(s)            174 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\e6
+
+15.05.2026  14:57    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:35               577 6f291674572b03610da064ae3d5d3031c65470
+15.05.2026  14:57               605 8353f4ce9a0b4570fece54de7f2104620d1d8e
+               2 File(s)          1˙182 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\e8
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32               140 467502696c68de61a5a1d3fc0ae5e28541ca7b
+               1 File(s)            140 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\ec
+
+15.05.2026  12:19    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:19             2˙804 00b87aebde79075d10544fea81f391cfb8c469
+               1 File(s)          2˙804 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\ed
+
+15.05.2026  13:13    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:49               384 1efa6a0c10cd94500f77f7a23d206164fc811c
+15.05.2026  13:13               812 347f72f98cde83dd55b9a38864680d6c791542
+15.05.2026  12:49               475 521eac1b844624dcf7ae50641034bb7f0c7699
+               3 File(s)          1˙671 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\f0
+
+15.05.2026  13:52    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:52               139 79aa721773c730aed646133344eb8534db5e94
+               1 File(s)            139 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\f1
+
+15.05.2026  13:07    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  13:07               605 f1709c845498d3bc60b073a1f142c21feeb1ba
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\f2
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32             5˙214 86410306c001f7cea8dfbcad8128a0ca78bccd
+               1 File(s)          5˙214 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\f4
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:32             2˙186 7eadf7a07ca74ca0f5536d39ac990ba76705b1
+               1 File(s)          2˙186 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\f5
+
+15.05.2026  12:19    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  12:19               494 a265335736ab3779bfa3d032e8db72d5fa77a7
+               1 File(s)            494 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\f7
+
+15.05.2026  15:00    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  15:00               605 5675b00c6dfefc28b99158862348f2957b39d1
+               1 File(s)            605 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\fa
+
+15.05.2026  14:35    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:35                97 f39d582deb14e5fb7aad7feac6955cb568ae69
+               1 File(s)             97 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\fd
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  10:16               166 17b684ae216357f37d732f9d4b764b6e65636d
+               1 File(s)            166 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\ff
+
+15.05.2026  14:27    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  14:27               166 9a377bfeae2851fecad29a9302442246f6839b
+               1 File(s)            166 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\info
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\objects\pack
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  15:32    <DIR>          ..
+15.05.2026  09:51            12˙412 pack-92e01fd2a5aa0cf01e7ed7f6ac11b976a14c79ac.idx
+15.05.2026  10:16           242˙025 pack-92e01fd2a5aa0cf01e7ed7f6ac11b976a14c79ac.pack
+15.05.2026  09:51             1˙672 pack-92e01fd2a5aa0cf01e7ed7f6ac11b976a14c79ac.rev
+               3 File(s)        256˙109 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\refs
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  15:32    <DIR>          heads
+15.05.2026  09:51    <DIR>          remotes
+15.05.2026  09:51    <DIR>          tags
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\refs\heads
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  15:32                41 main
+               1 File(s)             41 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\refs\remotes
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  15:32    <DIR>          origin
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\refs\remotes\origin
+
+15.05.2026  15:32    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  09:51                30 HEAD
+15.05.2026  15:32                41 main
+               2 File(s)             71 bytes
+
+ Directory of d:\GIT\PortalMCXI\.git\refs\tags
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  15:34    <DIR>          ..
+15.05.2026  15:32             1˙426 Dockerfile
+15.05.2026  10:16    <DIR>          PortalMCXIBackend
+               1 File(s)          1˙426 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  09:51    <DIR>          ..
+15.05.2026  09:51               151 appsettings.json
+15.05.2026  10:07    <DIR>          bin
+15.05.2026  10:16    <DIR>          obj
+15.05.2026  10:16               569 PortalMCXIBackend.csproj
+15.05.2026  10:16            16˙319 PortalMCXIBackend.csproj.lscache
+15.05.2026  09:51               219 PortalMCXIBackend.http
+15.05.2026  09:51                72 PortalMCXIBackend.slnx
+15.05.2026  10:40             5˙794 Program.cs
+15.05.2026  09:51    <DIR>          Properties
+               6 File(s)         23˙124 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\bin
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:16    <DIR>          ..
+15.05.2026  10:07    <DIR>          Debug
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\bin\Debug
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:07    <DIR>          ..
+15.05.2026  10:07    <DIR>          net10.0
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\bin\Debug\net10.0
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:07    <DIR>          ..
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\obj
+
+15.05.2026  10:16    <DIR>          .
+15.05.2026  10:16    <DIR>          ..
+15.05.2026  10:07    <DIR>          Debug
+15.05.2026  10:16            32˙411 PortalMCXIBackend.csproj.nuget.dgspec.json
+15.05.2026  10:16             1˙328 PortalMCXIBackend.csproj.nuget.g.props
+15.05.2026  10:07               497 PortalMCXIBackend.csproj.nuget.g.targets
+15.05.2026  10:16            48˙520 project.assets.json
+15.05.2026  10:16             1˙879 project.nuget.cache
+               5 File(s)         84˙635 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\obj\Debug
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:16    <DIR>          ..
+15.05.2026  10:07    <DIR>          net10.0
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\obj\Debug\net10.0
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:07    <DIR>          ..
+15.05.2026  10:07               200 .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+15.05.2026  10:07             1˙025 PortalMCXIBackend.AssemblyInfo.cs
+15.05.2026  10:07                66 PortalMCXIBackend.AssemblyInfoInputs.cache
+15.05.2026  10:16             8˙415 PortalMCXIBackend.assets.cache
+15.05.2026  10:07             5˙538 PortalMCXIBackend.csproj.AssemblyReference.cache
+15.05.2026  10:16             1˙141 PortalMCXIBackend.GeneratedMSBuildEditorConfig.editorconfig
+15.05.2026  10:07               642 PortalMCXIBackend.GlobalUsings.g.cs
+15.05.2026  10:07    <DIR>          ref
+15.05.2026  10:07    <DIR>          refint
+               7 File(s)         17˙027 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\obj\Debug\net10.0\ref
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:07    <DIR>          ..
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\obj\Debug\net10.0\refint
+
+15.05.2026  10:07    <DIR>          .
+15.05.2026  10:07    <DIR>          ..
+               0 File(s)              0 bytes
+
+ Directory of d:\GIT\PortalMCXI\backend\PortalMCXIBackend\Properties
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  10:16    <DIR>          ..
+15.05.2026  09:51               383 launchSettings.json
+               1 File(s)            383 bytes
+
+ Directory of d:\GIT\PortalMCXI\frontend
+
+15.05.2026  12:16    <DIR>          .
+15.05.2026  15:34    <DIR>          ..
+15.05.2026  09:51               277 .gitignore
+15.05.2026  09:51               718 Dockerfile
+15.05.2026  09:51               787 eslint.config.js
+15.05.2026  09:51               659 index.html
+15.05.2026  09:51           108˙013 package-lock.json
+15.05.2026  09:51               826 package.json
+15.05.2026  09:51                97 postcss.config.js
+15.05.2026  09:51             1˙043 README.md
+15.05.2026  13:50    <DIR>          src
+15.05.2026  09:51               191 tailwind.config.js
+15.05.2026  09:51               444 vite.config.js
+              10 File(s)        113˙055 bytes
+
+ Directory of d:\GIT\PortalMCXI\frontend\src
+
+15.05.2026  13:50    <DIR>          .
+15.05.2026  12:16    <DIR>          ..
+15.05.2026  12:18             8˙163 App.jsx
+15.05.2026  13:51             7˙566 Log.jsx
+15.05.2026  15:30            16˙105 main.jsx
+15.05.2026  13:07            11˙157 Roman.jsx
+               4 File(s)         42˙991 bytes
+
+ Directory of d:\GIT\PortalMCXI\scripts
+
+15.05.2026  09:51    <DIR>          .
+15.05.2026  15:34    <DIR>          ..
+15.05.2026  09:51             2˙902 portal_info.sh
+15.05.2026  09:51             3˙130 portal_install.sh
+15.05.2026  09:51             3˙118 rf_install.sh
+15.05.2026  09:51             1˙680 rp.sh
+15.05.2026  09:51             1˙690 symlinky.md
+               5 File(s)         12˙520 bytes
+
+     Total Files Listed:
+             178 File(s)        711˙473 bytes
+             307 Dir(s)  3˙674˙931˙085˙312 bytes free
