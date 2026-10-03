@@ -6,12 +6,14 @@ on:
       - "work/backend-baseline-and-infohub-v1"
     paths:
       - "backend/**"
+      - ".env.example"
       - ".github/workflows/backend-baseline.yml"
   pull_request:
     branches:
       - main
     paths:
       - "backend/**"
+      - ".env.example"
       - ".github/workflows/backend-baseline.yml"
 
 permissions:
@@ -47,6 +49,11 @@ jobs:
 
       - name: Smoke backend routes
         shell: bash
+        env:
+          PORTAL_LOCATION_NAME: "CI fixture"
+          PORTAL_LOCATION_LAT: "50.0755"
+          PORTAL_LOCATION_LON: "14.4378"
+          PORTAL_TIMEZONE: "Europe/Prague"
         run: |
           set -euo pipefail
 
@@ -58,13 +65,11 @@ jobs:
           trap 'kill "$pid" 2>/dev/null || true' EXIT
 
           ready=0
-
           for _ in $(seq 1 30); do
-            if curl -fsS               http://127.0.0.1:5099/               >/tmp/root.txt; then
+            if curl -fsS http://127.0.0.1:5099/ >/tmp/root.txt; then
               ready=1
               break
             fi
-
             sleep 1
           done
 
@@ -75,11 +80,10 @@ jobs:
 
           grep -F "PortalMCXI API is running" /tmp/root.txt
 
-          curl -fsS             "http://127.0.0.1:5099/system"             >/tmp/system.json
-
-          curl -fsS             "http://127.0.0.1:5099/api/esoterika/kondiciogram?birthDateStr=2000-01-01"             >/tmp/kondiciogram.json
-
-          curl -fsS             "http://127.0.0.1:5099/api/casna/dashboard"             >/tmp/casna.json
+          curl -fsS http://127.0.0.1:5099/system >/tmp/system.json
+          curl -fsS "http://127.0.0.1:5099/api/esoterika/kondiciogram?birthDateStr=2000-01-01" >/tmp/kondiciogram.json
+          curl -fsS http://127.0.0.1:5099/api/casna/dashboard >/tmp/casna.json
+          curl -fsS http://127.0.0.1:5099/api/info/morning >/tmp/morning.json
 
           python3 - <<'PY'
           import json
@@ -87,14 +91,21 @@ jobs:
           system = json.load(open("/tmp/system.json", encoding="utf-8"))
           kond = json.load(open("/tmp/kondiciogram.json", encoding="utf-8"))
           casna = json.load(open("/tmp/casna.json", encoding="utf-8"))
+          morning = json.load(open("/tmp/morning.json", encoding="utf-8"))
 
           assert system["status"] == "Online"
           assert isinstance(kond["physical"], (int, float))
           assert isinstance(casna["projects"], list)
           assert isinstance(casna["tasks"], list)
+          assert morning["location"]["name"] == "CI fixture"
+          assert morning["overallStatus"] in {"OK", "PARTIAL"}
+          if morning["overallStatus"] == "OK":
+              assert morning["weather"]["source"] == "Open-Meteo"
+              assert morning["sun"]["source"] == "Open-Meteo"
 
           print("BACKEND_BUILD=PASS")
           print("BACKEND_SMOKE=PASS")
+          print("MORNING_INFO_ROUTE=PASS")
           print("RFU_CAPACITY_USED=NO")
           print("CONTABO_MUTATION=NO")
           PY

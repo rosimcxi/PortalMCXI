@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using PortalMCXIBackend.Endpoints;
 using PortalMCXIBackend.Models;
+using PortalMCXIBackend.Services;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -31,6 +32,11 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient<MorningInfoService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(8);
+    client.DefaultRequestHeaders.UserAgent.ParseAdd("PortalMCXI/1.0");
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -54,5 +60,6 @@ app.MapScalarApiReference(options =>
 app.MapSystemEndpoints();
 app.MapEsoterikaEndpoints();
 app.MapCasNaEndpoints();
+app.MapInfoEndpoints();
 
 app.Run();
