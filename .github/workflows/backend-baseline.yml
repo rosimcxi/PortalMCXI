@@ -99,8 +99,16 @@ jobs:
           assert isinstance(casna["tasks"], list)
           assert morning["location"]["name"] == "CI fixture"
           assert morning["overallStatus"] in {"OK", "PARTIAL"}
-          if morning["overallStatus"] == "OK":
+          assert morning["finance"] is None or morning["finance"]["source"] == "ČNB"
+          if morning["metals"] is not None:
+              assert morning["metals"]["source"] == "Gold API"
+              assert morning["metals"]["gold"]["symbol"] == "XAU"
+              assert morning["metals"]["silver"]["symbol"] == "XAG"
+              assert morning["metals"]["gold"]["czkPerGram"] > 0
+              assert morning["metals"]["silver"]["czkPerGram"] > 0
+          if morning["weather"] is not None:
               assert morning["weather"]["source"] == "Open-Meteo"
+          if morning["sun"] is not None:
               assert morning["sun"]["source"] == "Open-Meteo"
 
           print("BACKEND_BUILD=PASS")

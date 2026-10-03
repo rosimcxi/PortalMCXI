@@ -36,6 +36,7 @@ public sealed class MorningInfoService(HttpClient httpClient)
         WeatherSnapshot? weather = null;
         SunSnapshot? sun = null;
         FinanceSnapshot? finance = null;
+        MetalsSnapshot? metals = null;
 
         if (latitude is not null && longitude is not null)
         {
@@ -53,10 +54,22 @@ public sealed class MorningInfoService(HttpClient httpClient)
 
         finance = await LoadFinanceAsync(errors, cancellationToken);
 
+        if (finance is not null)
+        {
+            metals = await LoadMetalsAsync(
+                finance.UsdCzk,
+                errors,
+                cancellationToken);
+        }
+        else
+        {
+            errors.Add("Kovy nelze převést do CZK bez USD/CZK.");
+        }
+
         var status =
             errors.Count == 0
                 ? "OK"
-                : weather is not null || sun is not null || finance is not null
+                : weather is not null || sun is not null || finance is not null || metals is not null
                     ? "PARTIAL"
                     : "CONFIG_REQUIRED";
 
@@ -71,6 +84,7 @@ public sealed class MorningInfoService(HttpClient httpClient)
             Weather: weather,
             Sun: sun,
             Finance: finance,
+            Metals: metals,
             OverallStatus: status,
             Errors: errors.ToArray());
     }
@@ -136,6 +150,107 @@ public sealed class MorningInfoService(HttpClient httpClient)
             return (null, null);
         }
     }
+
+    private async Task<MetalsSnapshot?> LoadMetalsAsync(
+        double usdCzk,
+        List<string> errors,
+        CancellationToken cancellationToken)
+    {
+        const double gramsPerTroyOunce = 31.1034768d;
+
+        try
+        {
+            var goldTask = LoadMetalQuoteAsync("XAU", cancellationToken);
+            var silverTask = LoadMetalQuoteAsync("XAG", cancellationToken);
+
+            await Task.WhenAll(goldTask, silverTask);
+
+            var gold = await goldTask;
+            var silver = await silverTask;
+
+            MetalPrice Convert(MetalQuote quote)
+            {
+                var usdPerGram = quote.UsdPerTroyOunce / gramsPerTroyOunce;
+                var czkPerGram = usdPerGram * usdCzk;
+
+                return new MetalPrice(
+                    Symbol: quote.Symbol,
+                    Name: quote.Name,
+                    SourceUpdatedAt: quote.UpdatedAt,
+                    UsdPerTroyOunce: Math.Round(quote.UsdPerTroyOunce, 4),
+                    UsdPerGram: Math.Round(usdPerGram, 4),
+                    CzkPerGram: Math.Round(czkPerGram, 2));
+            }
+
+            return new MetalsSnapshot(
+                Source: "Gold API",
+                Gold: Convert(gold),
+                Silver: Convert(silver),
+                Status: "OK",
+                Note: "Orientační spot/reference cena; nejde o výkupní ani prodejní nabídku.");
+        }
+        catch (Exception ex) when (
+            ex is HttpRequestException or
+            TaskCanceledException or
+            JsonException or
+            InvalidOperationException)
+        {
+            errors.Add($"Gold API: {ex.GetType().Name}: {ex.Message}");
+            return null;
+        }
+    }
+
+    private async Task<MetalQuote> LoadMetalQuoteAsync(
+        string symbol,
+        CancellationToken cancellationToken)
+    {
+        using var response = await httpClient.GetAsync(
+            $"https://api.gold-api.com/price/{symbol}",
+            cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        await using var stream =
+            await response.Content.ReadAsStreamAsync(cancellationToken);
+
+        using var json =
+            await JsonDocument.ParseAsync(
+                stream,
+                cancellationToken: cancellationToken);
+
+        var root = json.RootElement;
+
+        var returnedSymbol = root.GetProperty("symbol").GetString();
+        var name = root.GetProperty("name").GetString();
+        var price = root.GetProperty("price").GetDouble();
+        var currency = root.TryGetProperty("currency", out var currencyElement)
+            ? currencyElement.GetString()
+            : "USD";
+        var updatedAt = root.TryGetProperty("updatedAt", out var updatedElement)
+            ? updatedElement.GetString()
+            : null;
+
+        if (!string.Equals(returnedSymbol, symbol, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(currency, "USD", StringComparison.OrdinalIgnoreCase) ||
+            string.IsNullOrWhiteSpace(name) ||
+            price <= 0)
+        {
+            throw new InvalidOperationException(
+                $"Neočekávaná odpověď pro {symbol}.");
+        }
+
+        return new MetalQuote(
+            returnedSymbol!,
+            name,
+            price,
+            updatedAt);
+    }
+
+    private sealed record MetalQuote(
+        string Symbol,
+        string Name,
+        double UsdPerTroyOunce,
+        string? UpdatedAt);
 
     private async Task<FinanceSnapshot?> LoadFinanceAsync(
         List<string> errors,
