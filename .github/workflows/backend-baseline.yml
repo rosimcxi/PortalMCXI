@@ -47,6 +47,14 @@ jobs:
           set -euo pipefail
           dotnet build             backend/PortalMCXIBackend/PortalMCXIBackend.csproj             -c Release             --nologo
 
+      - name: Build frontend
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd frontend
+          npm ci
+          npm run build
+
       - name: Smoke backend routes
         shell: bash
         env:
