@@ -15,7 +15,8 @@ import {
   AlertCircle, Terminal, ChevronLeft, Download, Box, 
   Search, AlertTriangle, User, ExternalLink,
   Clock, Sparkles, Heart, Monitor, ListChecks,
-  ChevronRight, BarChart3, ShieldCheck, FileCode2, Network
+  ChevronRight, BarChart3, ShieldCheck, FileCode2, Network,
+  CloudSun, CircleDollarSign, Gem, Sunrise, Gauge
 } from 'lucide-react';
 
 // Záchranná data, pokud by C# API zrovna nebylo dostupné
@@ -220,6 +221,210 @@ const RomanView = ({ projects }) => (
   </div>
 );
 
+
+const MorningPanel = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const loadMorning = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/info/morning', {
+        headers: { Accept: 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      setData(await response.json());
+    } catch (err) {
+      setError(err?.message || 'Ranní přehled není dostupný.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadMorning();
+  }, []);
+
+  const status =
+    data?.overallStatus ||
+    (error ? 'UNAVAILABLE' : 'LOADING');
+
+  const statusClass =
+    status === 'OK'
+      ? 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20'
+      : status === 'PARTIAL'
+        ? 'text-amber-500 bg-amber-500/10 border-amber-500/20'
+        : 'text-slate-500 bg-slate-500/10 border-slate-500/20';
+
+  const Metric = ({ label, value }) => (
+    <div className="flex items-baseline justify-between gap-4 py-1.5">
+      <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+        {label}
+      </span>
+      <span className="text-sm font-black text-slate-900 dark:text-white text-right">
+        {value ?? '—'}
+      </span>
+    </div>
+  );
+
+  const Card = ({ icon: Icon, title, children, foot }) => (
+    <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2rem] p-6 shadow-lg min-h-[170px]">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="p-2.5 rounded-2xl bg-indigo-50 dark:bg-slate-800 text-indigo-500">
+          <Icon size={20} />
+        </div>
+        <h3 className="font-black text-slate-900 dark:text-white text-sm">
+          {title}
+        </h3>
+      </div>
+      <div>{children}</div>
+      {foot && (
+        <p className="mt-5 text-[9px] uppercase tracking-widest text-slate-400 font-bold">
+          {foot}
+        </p>
+      )}
+    </div>
+  );
+
+  return (
+    <section className="mb-14">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              Ranní přehled
+            </h2>
+            <span className={`px-3 py-1 rounded-full border text-[9px] font-black tracking-widest ${statusClass}`}>
+              {status}
+            </span>
+          </div>
+          <p className="text-xs text-slate-400">
+            {data?.location?.name || 'Soukromá lokalita'} · {data?.location?.timezone || 'Europe/Prague'}
+          </p>
+        </div>
+
+        <button
+          onClick={loadMorning}
+          disabled={loading}
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black disabled:opacity-50"
+        >
+          <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+          Obnovit
+        </button>
+      </div>
+
+      {error && (
+        <div className="mb-6 p-4 rounded-2xl border border-rose-500/20 bg-rose-500/10 text-rose-500 text-sm font-bold">
+          Ranní přehled není dostupný: {error}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <Card
+          icon={CloudSun}
+          title="Počasí"
+          foot={data?.weather?.source ? `Zdroj: ${data.weather.source}` : null}
+        >
+          <Metric label="Teplota" value={data?.weather ? `${data.weather.temperatureC.toFixed(1)} °C` : '—'} />
+          <Metric label="Pocitově" value={data?.weather ? `${data.weather.apparentTemperatureC.toFixed(1)} °C` : '—'} />
+          <Metric label="Srážky" value={data?.weather ? `${data.weather.precipitationMm.toFixed(1)} mm` : '—'} />
+          <Metric label="Tlak" value={data?.weather ? `${Math.round(data.weather.pressureMslHpa)} hPa` : '—'} />
+          <Metric label="Vítr" value={data?.weather ? `${data.weather.windSpeedKmh.toFixed(1)} km/h` : '—'} />
+        </Card>
+
+        <Card
+          icon={Sunrise}
+          title="Slunce"
+          foot={data?.sun?.source ? `Zdroj: ${data.sun.source}` : null}
+        >
+          <Metric label="Východ" value={data?.sun?.sunrise?.split('T')?.[1] || '—'} />
+          <Metric label="Západ" value={data?.sun?.sunset?.split('T')?.[1] || '—'} />
+          <Metric
+            label="Délka dne"
+            value={
+              data?.sun
+                ? `${Math.floor(data.sun.daylightMinutes / 60)} h ${Math.round(data.sun.daylightMinutes % 60)} min`
+                : '—'
+            }
+          />
+        </Card>
+
+        <Card
+          icon={CircleDollarSign}
+          title="Měny"
+          foot={data?.finance?.source ? `Zdroj: ${data.finance.source} · ${data.finance.rateDate}` : null}
+        >
+          <Metric label="1 USD" value={data?.finance ? `${data.finance.usdCzk.toFixed(3)} Kč` : '—'} />
+          <Metric label="1 EUR" value={data?.finance ? `${data.finance.eurCzk.toFixed(3)} Kč` : '—'} />
+        </Card>
+
+        <Card
+          icon={Gem}
+          title="Kovy"
+          foot={data?.metals?.source ? `Zdroj: ${data.metals.source}` : null}
+        >
+          <Metric
+            label="Zlato"
+            value={data?.metals?.gold ? `${Math.round(data.metals.gold.czkPerGram).toLocaleString('cs-CZ')} Kč/g` : '—'}
+          />
+          <Metric
+            label="Stříbro"
+            value={data?.metals?.silver ? `${data.metals.silver.czkPerGram.toFixed(2)} Kč/g` : '—'}
+          />
+          <p className="mt-4 text-[9px] leading-relaxed text-slate-400">
+            Orientační spot/reference cena.
+          </p>
+        </Card>
+
+        <Card icon={Sparkles} title="Tatva">
+          <Metric label="Aktuálně" value={data?.personal?.tatva?.aktualniTatva || '—'} />
+          <Metric label="Element" value={data?.personal?.tatva?.element || '—'} />
+          <Metric label="Další změna" value={data?.personal?.tatva?.dalsiZmena || '—'} />
+          <p className="mt-4 text-[9px] text-slate-400">
+            Počítáno od skutečného místního východu Slunce.
+          </p>
+        </Card>
+
+        <Card icon={Gauge} title="Kondiciogram">
+          <Metric label="Fyzický" value={data?.personal?.biorhythm ? `${data.personal.biorhythm.physical.toFixed(1)} %` : '—'} />
+          <Metric label="Emocionální" value={data?.personal?.biorhythm ? `${data.personal.biorhythm.emotional.toFixed(1)} %` : '—'} />
+          <Metric label="Intelektuální" value={data?.personal?.biorhythm ? `${data.personal.biorhythm.intellectual.toFixed(1)} %` : '—'} />
+        </Card>
+
+        <Card icon={Sparkles} title="Numerologie">
+          <Metric label="Životní číslo" value={data?.personal?.numerology?.lifeNumber ?? '—'} />
+          <Metric label="Osobní rok" value={data?.personal?.numerology?.personalYear ?? '—'} />
+          <p className="mt-4 text-[9px] leading-relaxed text-slate-400">
+            {data?.personal?.numerology?.description || 'Soukromý profil není nakonfigurován.'}
+          </p>
+        </Card>
+
+        <Card icon={Activity} title="Freshness / stav">
+          <Metric label="Celkem" value={status} />
+          <Metric label="Počasí" value={data?.weather?.status || '—'} />
+          <Metric label="Slunce" value={data?.sun?.status || '—'} />
+          <Metric label="Finance" value={data?.finance?.status || '—'} />
+          <Metric label="Kovy" value={data?.metals?.status || '—'} />
+          <Metric label="Osobní" value={data?.personal?.status || '—'} />
+        </Card>
+      </div>
+
+      {data?.errors?.length > 0 && (
+        <div className="mt-5 p-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">
+          {data.errors.join(' · ')}
+        </div>
+      )}
+    </section>
+  );
+};
+
 const DashboardView = ({ projects }) => (
   <div className="min-h-screen bg-slate-50 dark:bg-[#010409] flex flex-col lg:flex-row font-sans selection:bg-indigo-500/30">
     <aside className="w-full lg:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-8 flex flex-col shadow-2xl">
@@ -259,6 +464,8 @@ const DashboardView = ({ projects }) => (
           <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-500 border border-indigo-100 dark:border-indigo-800"><User size={20} /></div>
         </div>
       </header>
+
+      <MorningPanel />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-16">
         {projects.map(p => (
