@@ -37,7 +37,53 @@ public record FinanceSnapshot(string Source, string RateDate, double UsdCzk, dou
 public record MetalPrice(string Symbol, string Name, string? SourceUpdatedAt, double UsdPerTroyOunce, double UsdPerGram, double CzkPerGram);
 public record MetalsSnapshot(string Source, MetalPrice Gold, MetalPrice Silver, string Status, string Note);
 public record PersonalSnapshot(TatvaInfo? Tatva, NumerologieResult? Numerology, KondiciogramResult? Biorhythm, string Status, string Note);
-public record MorningInfoResponse(DateTimeOffset GeneratedAtUtc, MorningLocation Location, WeatherSnapshot? Weather, SunSnapshot? Sun, FinanceSnapshot? Finance, MetalsSnapshot? Metals, PersonalSnapshot? Personal, string OverallStatus, string[] Errors);
+public record MorningInfoResponse(DateTimeOffset GeneratedAtUtc, MorningLocation Location, WeatherSnapshot? Weather, SunSnapshot? Sun, FinanceSnapshot? Finance, MetalsSnapshot? Metals, PersonalSnapshot? Personal, string OverallStatus, string[] Errors);\n
+public record CollectionsSummary(int ItemRows, int Pieces, decimal PurchaseTotal, decimal MarketTotal, string Currency);
+public record CollectionItemDto(
+    Guid ItemId,
+    string ItemType,
+    string Name,
+    string? Country,
+    int? Year,
+    string? Denomination,
+    int Quantity,
+    string? Metal,
+    decimal? Fineness,
+    decimal? WeightG,
+    decimal? PurchasePrice,
+    string PurchaseCurrency,
+    DateTimeOffset? ValuedAt,
+    decimal? MetalValue,
+    decimal? MarketMin,
+    decimal? MarketEstimate,
+    decimal? MarketMax,
+    string? ValuationCurrency,
+    decimal? Confidence);
+public record CollectionImportItem(
+    Guid ItemId,
+    string ItemType,
+    string Name,
+    string? Country,
+    int? Year,
+    string? Denomination,
+    int Quantity,
+    string? Condition,
+    string? CatalogNumber,
+    string? Metal,
+    decimal? Fineness,
+    decimal? WeightG,
+    decimal? DiameterMm,
+    decimal? PurchasePrice,
+    string PurchaseCurrency,
+    DateOnly? PurchaseDate,
+    string? AcquisitionSource,
+    string? StorageLocation,
+    string? Notes,
+    decimal? IdentityConfidence,
+    string IdentityStatus);
+public record CollectionImportRequest(List<CollectionImportItem> Items);
+public record CollectionImportResult(int Total, int Inserted, int Updated);
+
 
 [JsonSerializable(typeof(SystemStatus))]
 [JsonSerializable(typeof(DashboardStats))]
@@ -84,6 +130,13 @@ public record MorningInfoResponse(DateTimeOffset GeneratedAtUtc, MorningLocation
 [JsonSerializable(typeof(MetalsSnapshot))]
 [JsonSerializable(typeof(PersonalSnapshot))]
 [JsonSerializable(typeof(MorningInfoResponse))]
+[JsonSerializable(typeof(CollectionsSummary))]
+[JsonSerializable(typeof(CollectionItemDto))]
+[JsonSerializable(typeof(List<CollectionItemDto>))]
+[JsonSerializable(typeof(CollectionImportItem))]
+[JsonSerializable(typeof(List<CollectionImportItem>))]
+[JsonSerializable(typeof(CollectionImportRequest))]
+[JsonSerializable(typeof(CollectionImportResult))]
 [JsonSerializable(typeof(string))]
 [JsonSerializable(typeof(string[]))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext { }
