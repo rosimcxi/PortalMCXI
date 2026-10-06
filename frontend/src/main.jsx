@@ -1,10 +1,10 @@
 // =====================================================================
 // SOUBOR:   main.jsx
 // PROJEKT:  PortalMCXI
-// VERZE:    v79.0
-// ZMĚNA:    2026-05-17
+// VERZE:    v80.0
+// ZMĚNA:    2026-10-06
 // AUTOR:    Ing. Roman Fišer
-// POPIS:    Dynamické stahování tlačítek (odkazů) z .NET API
+// POPIS:    PortalMCXI dashboard včetně modulu Sbírky a ranního přehledu
 // =====================================================================
 
 import React, { useState, useEffect } from 'react';
