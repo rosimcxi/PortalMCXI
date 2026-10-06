@@ -61,6 +61,7 @@ app.MapScalarApiReference(options =>
 app.MapSystemEndpoints();
 app.MapEsoterikaEndpoints();
 app.MapCasNaEndpoints();
+app.MapCollectionsEndpoints();
 app.MapInfoEndpoints();
 
 app.Run();
