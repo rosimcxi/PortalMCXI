@@ -1,6 +1,6 @@
 # =====================================================================
 # SOUBOR:   docker-compose.yml
-# VERZE:    v3.25
+# VERZE:    v3.26
 # POPIS:    Opravená produkční verze. API ignoruje "dotnet run" a 
 #           staví se čistě přes náš inteligentní Dockerfile.
 # =====================================================================
