@@ -19,3 +19,9 @@ mackey.txt
 *.pfx
 *.p12
 *.lscache
+
+# Soukroma inventarni data modulu Sbirky
+private/
+data/private/
+*.collections.private.json
+*.collections.private.csv
