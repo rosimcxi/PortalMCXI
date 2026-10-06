@@ -1,10 +1,10 @@
 // =====================================================================
 // SOUBOR:   main.jsx
 // PROJEKT:  PortalMCXI
-// VERZE:    v79.0
-// ZMĚNA:    2026-05-17
+// VERZE:    v80.0
+// ZMĚNA:    2026-10-06
 // AUTOR:    Ing. Roman Fišer
-// POPIS:    Dynamické stahování tlačítek (odkazů) z .NET API
+// POPIS:    PortalMCXI dashboard včetně modulu Sbírky a ranního přehledu
 // =====================================================================
 
 import React, { useState, useEffect } from 'react';
@@ -16,7 +16,7 @@ import {
   Search, AlertTriangle, User, ExternalLink,
   Clock, Sparkles, Heart, Monitor, ListChecks,
   ChevronRight, BarChart3, ShieldCheck, FileCode2, Network,
-  CloudSun, CircleDollarSign, Gem, Sunrise, Gauge
+  CloudSun, CircleDollarSign, Gem, Sunrise, Gauge, Coins
 } from 'lucide-react';
 
 // Záchranná data, pokud by C# API zrovna nebylo dostupné
@@ -425,6 +425,94 @@ const MorningPanel = () => {
   );
 };
 
+const CollectionsView = ({ onBack }) => {
+  const [summary, setSummary] = useState(null);
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/collections/summary').then(r => {
+        if (!r.ok) throw new Error(`summary HTTP ${r.status}`);
+        return r.json();
+      }),
+      fetch('/api/collections/items').then(r => {
+        if (!r.ok) throw new Error(`items HTTP ${r.status}`);
+        return r.json();
+      })
+    ])
+      .then(([s, i]) => { setSummary(s); setItems(i); })
+      .catch(err => setError(err?.message || 'Sbírky nejsou dostupné.'));
+  }, []);
+
+  const money = value =>
+    value == null ? '—' : `${Number(value).toLocaleString('cs-CZ')} Kč`;
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-[#010409] p-6 md:p-10 font-sans">
+      <div className="max-w-7xl mx-auto">
+        <button onClick={onBack} className="mb-8 flex items-center gap-2 text-indigo-500 font-black">
+          <ChevronLeft size={20}/> Zpět
+        </button>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.35em] text-indigo-500 font-black">PortalMCXI</p>
+            <h1 className="text-4xl font-black text-slate-900 dark:text-white mt-2">Sbírky</h1>
+            <p className="text-sm text-slate-500 mt-2">Mince, známky, fotografie a historie ocenění.</p>
+          </div>
+          <button className="px-5 py-3 rounded-2xl bg-indigo-600 text-white font-black text-xs flex items-center gap-2">
+            <Coins size={18}/> Přidat / vyfotit
+          </button>
+        </div>
+
+        {error && <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 text-amber-600 font-bold">{error}</div>}
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {[
+            ['Pozic', summary?.itemRows],
+            ['Kusů', summary?.pieces],
+            ['Nákup', money(summary?.purchaseTotal)],
+            ['Aktuální odhad', money(summary?.marketTotal)]
+          ].map(([label, value]) => (
+            <div key={label} className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5">
+              <p className="text-[10px] uppercase tracking-widest text-slate-400 font-black">{label}</p>
+              <p className="text-xl font-black text-slate-900 dark:text-white mt-2">{value ?? '—'}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <div className="p-5 border-b border-slate-200 dark:border-slate-800 font-black text-slate-900 dark:text-white">
+            Evidované položky
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="text-left text-[10px] uppercase tracking-widest text-slate-400">
+                <tr>
+                  <th className="p-4">Položka</th><th className="p-4">Rok</th><th className="p-4">Kov</th>
+                  <th className="p-4">Ks</th><th className="p-4">Nákup / ks</th><th className="p-4">Odhad / ks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(item => (
+                  <tr key={item.itemId} className="border-t border-slate-100 dark:border-slate-800">
+                    <td className="p-4 font-bold text-slate-900 dark:text-white">{item.name}</td>
+                    <td className="p-4 text-slate-500">{item.year ?? '—'}</td>
+                    <td className="p-4 text-slate-500">{item.metal ?? '—'}</td>
+                    <td className="p-4 text-slate-500">{item.quantity}</td>
+                    <td className="p-4 text-slate-500">{money(item.purchasePrice)}</td>
+                    <td className="p-4 font-black text-indigo-500">{money(item.marketEstimate)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const DashboardView = ({ projects }) => (
   <div className="min-h-screen bg-slate-50 dark:bg-[#010409] flex flex-col lg:flex-row font-sans selection:bg-indigo-500/30">
     <aside className="w-full lg:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-8 flex flex-col shadow-2xl">
@@ -434,6 +522,9 @@ const DashboardView = ({ projects }) => (
       </div>
       <nav className="space-y-2 mb-12">
         <button className="w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-black bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 border border-indigo-100 dark:border-indigo-900/30 shadow-sm"><LayoutDashboard size={20}/> Dashboard</button>
+        <button onClick={() => window.location.hash = 'collections'} className="w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group border border-transparent">
+          <Coins size={20} className="text-amber-500"/> Sbírky
+        </button>
         <button onClick={() => window.location.hash = 'logs'} className="w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group border border-transparent">
           <Terminal size={20} className="text-indigo-500 group-hover:rotate-12 transition-transform"/> Diagnostika
         </button>
@@ -518,6 +609,7 @@ export default function App() {
     const handleNav = () => {
       const isRoman = window.location.hostname.includes('roman.');
       if (window.location.hash === '#logs') setView('logs');
+      else if (window.location.hash === '#collections') setView('collections');
       else if (isRoman) setView('roman');
       else setView('home');
     };
@@ -556,6 +648,7 @@ export default function App() {
   }, []);
 
   if (view === 'logs') return <LogView onBack={() => { window.location.hash = ''; }} />;
+  if (view === 'collections') return <CollectionsView onBack={() => { window.location.hash = ''; }} />;
   if (view === 'roman') return <RomanView projects={projects} />;
 
   return <DashboardView projects={projects} />;

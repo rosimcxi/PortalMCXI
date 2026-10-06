@@ -1,6 +1,6 @@
 # =====================================================================
 # SOUBOR:   docker-compose.yml
-# VERZE:    v3.25
+# VERZE:    v3.26
 # POPIS:    Opravená produkční verze. API ignoruje "dotnet run" a 
 #           staví se čistě přes náš inteligentní Dockerfile.
 # =====================================================================
@@ -33,6 +33,7 @@ services:
       - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__PortalDb=Host=db;Port=5432;Database=portal_db;Username=roman_admin;Password=${DB_PASSWORD:?Nastavte DB_PASSWORD v soukromem prostredi}
     depends_on:
       - db
     networks:
