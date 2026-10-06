@@ -1,3 +1,11 @@
+// =====================================================================
+// Soubor: AppModels.cs
+// Projekt: PortalMCXIBackend
+// Verze: 1.6.0
+// Datum: 2026-10-06
+// Ucel: Typovane API modely vcetne Info a Sbirky.
+// =====================================================================
+
 using System.Text.Json.Serialization;
 
 namespace PortalMCXIBackend.Models;
