@@ -25,7 +25,7 @@ Portal používá maximálně 30 % RFU. Podrobnosti a současná mezera ve vynuc
 | React/Vite/Tailwind | Ve zdrojích | frontend/package.json |
 | .NET 10 | Ve zdrojích | backend/PortalMCXIBackend/PortalMCXIBackend.csproj |
 | PostgreSQL 16 | Deklarováno v Compose | skutečný server zatím UNKNOWN |
-| Build a základní API | Opravy reconciliovány; CI PENDING | docs/BASELINE_RECONCILIATION.md; target zůstává UNKNOWN |
+| Build a základní API | SOURCE MERGED + TESTED_CI | PR #4; main 74b61cd; runs 37656581244 a 37656849872 SUCCESS; target UNKNOWN |
 | Stav Contabo a veřejné služby | UNKNOWN | nutný read-only audit přes RFU |
 | Kvóta RFU 30 % | Politika definována; runtime PENDING | bez důkazu vynucení RFU práci nespouštět |
 | Nasazení | Neprovedeno tímto importem | DB a produkce se nemění |

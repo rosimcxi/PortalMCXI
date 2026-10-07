@@ -2,7 +2,7 @@
 
 ## Aktuální pokračování – 7. 10. 2026
 
-MorningInfo a dashboard už jsou na main f6f5b4d. Neimplementovat je znovu. Místní opravy staršího importu jsou reconciliovány se současným modulem: viz [BASELINE_RECONCILIATION.md](BASELINE_RECONCILIATION.md). Nejbližší krok je ověřit CI této změny, potom skutečnou kvótu RFU a cílovou topologii. Persistenci, časované collectory, historii ranních/večerních zpráv a pylové informace teprve dokončit. Aktuální MorningInfo stále sbírá externí data při požadavku; cílové oddělení sběru od čtení není hotové.
+MorningInfo a dashboard už jsou na main f6f5b4d. Neimplementovat je znovu. Místní opravy staršího importu jsou reconciliovány se současným modulem: viz [BASELINE_RECONCILIATION.md](BASELINE_RECONCILIATION.md). PR #4 je MERGED a CI na PR i výsledném main prošla. Nejbližší krok je doložit skutečnou kvótu RFU a čtecí přístup pro cílovou topologii. Persistenci, časované collectory, historii ranních/večerních zpráv a pylové informace teprve dokončit. Aktuální MorningInfo stále sbírá externí data při požadavku; cílové oddělení sběru od čtení není hotové.
 
 ## Pořadí
 
@@ -25,7 +25,7 @@ Zdrojové opravy lze připravovat izolovaně bez produkční DB změny. RFU prá
 
 ## Zadání nejbližší práce
 
-Dokončit PortalMCXI sestavitelný baseline z aktuálního main. Zachovat původní funkce a dokumentaci, použít docs/ARCHITECTURE_REVIEW.md jako vstupní nálezy, ověřit je na exact HEAD. Neprovádět Contabo deploy ani DB APPLY. Opravit pouze syntaxi, DTO kontrakty a build/frontend pipeline potřebné pro úspěšný lokální build/smoke. Před mutacemi a publikací revalidovat source a konkurenční práci. Výstup: celá změna, source SHA, skutečný test výsledek, známá omezení, další krok. Pokud se používá RFU, nejprve doložit 30% enforcement; jinak RFU dispatch zakázán.
+Původní zadání baseline bylo source dokončeno přes PR #4 a ověřeno dvěma CI běhy. Níže je jeho historický scope, nikoli pokyn tuto práci opakovat.\n\nDokončit PortalMCXI sestavitelný baseline z aktuálního main. Zachovat původní funkce a dokumentaci, použít docs/ARCHITECTURE_REVIEW.md jako vstupní nálezy, ověřit je na exact HEAD. Neprovádět Contabo deploy ani DB APPLY. Opravit pouze syntaxi, DTO kontrakty a build/frontend pipeline potřebné pro úspěšný lokální build/smoke. Před mutacemi a publikací revalidovat source a konkurenční práci. Výstup: celá změna, source SHA, skutečný test výsledek, známá omezení, další krok. Pokud se používá RFU, nejprve doložit 30% enforcement; jinak RFU dispatch zakázán.
 
 ## Otevřené informace
 
