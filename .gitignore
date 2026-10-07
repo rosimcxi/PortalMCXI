@@ -19,3 +19,4 @@ mackey.txt
 *.pfx
 *.p12
 *.lscache
+artifacts/

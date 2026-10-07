@@ -1,148 +1,56 @@
-using System.Collections.Concurrent;
 using PortalMCXIBackend.Models;
 
 namespace PortalMCXIBackend.Endpoints;
 
+// Vývojový in-memory modul. Každý proces má vlastní ukázková data.
 public static class CasNaEndpoints
 {
-    private static readonly ConcurrentDictionary<int, string> Projects =
-        new();
-
-    private static readonly ConcurrentDictionary<
-        int,
-        (int ProjectId, string Name)> Tasks =
-        new();
-
-    private static readonly ConcurrentBag<TimeEntry> TimeEntries =
-        new();
-
-    private static RunningTask? _currentRunningTask;
-    private static int _nextProjectId = 1;
-    private static int _nextTaskId = 1;
-
     public static void MapCasNaEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/casna");
-
-        EnsureSeedData();
+        var sync = new object();
+        var projects = new List<CasNaProject>
+        {
+            new(1, "PortalMCXI - Architektura"), new(2, "Databáze - Vývoj")
+        };
+        var tasks = new List<CasNaTask>
+        {
+            new(1, 1, "Návrh .NET API"), new(2, 2, "Optimalizace SQL dotazů")
+        };
+        var history = new List<TimeEntry>();
+        RunningTask? activeTask = null;
 
         group.MapGet("/dashboard", () =>
         {
-            var projects = Projects
-                .Select(item =>
-                    new CasNaProject(
-                        item.Key,
-                        item.Value))
-                .OrderBy(item => item.Id)
-                .ToList();
-
-            var tasks = Tasks
-                .Select(item =>
-                    new CasNaTask(
-                        item.Key,
-                        item.Value.ProjectId,
-                        item.Value.Name))
-                .OrderBy(item => item.Id)
-                .ToList();
-
-            return Results.Ok(
-                new CasNaDashboardResponse(
-                    projects,
-                    tasks,
-                    _currentRunningTask));
-        })
-        .WithName("GetCasNaDashboard");
+            lock (sync)
+                return Results.Ok(new CasNaDashboardResponse(projects, tasks, activeTask, history.ToList()));
+        }).WithName("GetCasNaDashboard");
 
         group.MapPost("/start", (CasNaStartRequest request) =>
         {
-            if (!Tasks.TryGetValue(
-                    request.TaskId,
-                    out var task))
+            lock (sync)
             {
-                return Results.NotFound(
-                    "Úkol s tímto ID neexistuje.");
+                var task = tasks.FirstOrDefault(t => t.Id == request.TaskId);
+                if (task is null) return Results.NotFound("Úkol s tímto ID neexistuje.");
+                if (activeTask is not null)
+                    return Results.BadRequest("Již běží jiný úkol. Nejprve jej zastavte.");
+                activeTask = new RunningTask(task.Id, task.ProjectId, task.Name, DateTime.UtcNow);
+                return Results.Ok(new SimpleMessageResponse($"Odstartováno: {task.Name}", activeTask.StartTime));
             }
-
-            if (_currentRunningTask is not null)
-            {
-                return Results.BadRequest(
-                    "Již běží jiný úkol. " +
-                    "Nejprve jej zastavte.");
-            }
-
-            _currentRunningTask = new RunningTask(
-                request.TaskId,
-                task.Name,
-                DateTime.Now);
-
-            return Results.Ok(
-                new SimpleMessageResponse(
-                    $"Odstartováno: " +
-                    $"{_currentRunningTask.TaskName}",
-                    DateTime.Now));
-        })
-        .WithName("StartCasNa");
+        }).WithName("StartCasNa");
 
         group.MapPost("/stop", (CasNaStopRequest request) =>
         {
-            if (_currentRunningTask is null)
+            lock (sync)
             {
-                return Results.BadRequest(
-                    "Žádný úkol aktuálně neběží. " +
-                    "Není co zastavovat.");
+                if (activeTask is null) return Results.BadRequest("Žádný úkol aktuálně neběží.");
+                var end = DateTime.UtcNow;
+                history.Add(new TimeEntry(activeTask.TaskId, activeTask.ProjectId,
+                    activeTask.StartTime, end, request.Note ?? ""));
+                var name = activeTask.TaskName;
+                activeTask = null;
+                return Results.Ok(new SimpleMessageResponse($"Ukončeno: {name}", end));
             }
-
-            var runningTask = _currentRunningTask;
-            var endTime = DateTime.Now;
-            var duration =
-                endTime - runningTask.StartTime;
-
-            TimeEntries.Add(
-                new TimeEntry(
-                    runningTask.TaskId,
-                    runningTask.StartTime,
-                    endTime,
-                    request.Note));
-
-            _currentRunningTask = null;
-
-            return Results.Ok(
-                new SimpleMessageResponse(
-                    $"Ukončeno: {runningTask.TaskName}. " +
-                    $"Zaznamenáno " +
-                    $"{(int)duration.TotalMinutes} minut.",
-                    endTime));
-        })
-        .WithName("StopCasNa");
-    }
-
-    private static void EnsureSeedData()
-    {
-        if (!Projects.IsEmpty)
-        {
-            return;
-        }
-
-        var portalProjectId =
-            Interlocked.Increment(ref _nextProjectId) - 1;
-
-        Projects.TryAdd(
-            portalProjectId,
-            "PortalMCXI - Architektura");
-
-        Tasks.TryAdd(
-            Interlocked.Increment(ref _nextTaskId) - 1,
-            (portalProjectId, "Návrh .NET API"));
-
-        var styraxProjectId =
-            Interlocked.Increment(ref _nextProjectId) - 1;
-
-        Projects.TryAdd(
-            styraxProjectId,
-            "Styrax - Databáze");
-
-        Tasks.TryAdd(
-            Interlocked.Increment(ref _nextTaskId) - 1,
-            (styraxProjectId, "Optimalizace SQL dotazů"));
+        }).WithName("StopCasNa");
     }
 }

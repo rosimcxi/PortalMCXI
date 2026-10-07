@@ -1,0 +1,54 @@
+name: PortalMCXI baseline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portal-baseline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  baseline:
+    # Izolovaný GitHub runner Portalu; nespotřebovává RFU worker pool.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Build API
+        run: dotnet build backend/PortalMCXIBackend/PortalMCXIBackend.csproj -c Release --nologo
+      - name: Test MorningInfo bez externich API
+        run: dotnet run --project tests/PortalMCXI.Checks/PortalMCXI.Checks.csproj -c Release
+      - name: Test API v Development i Production
+        run: python3 tests/smoke_api.py
+      - name: Install frontend
+        working-directory: frontend
+        run: npm ci
+      - name: Build a lint frontend
+        working-directory: frontend
+        run: npm run build && npm run lint
+      - name: Ověřit lokálně sestavené CSS
+        run: python3 tests/check_frontend_build.py
+      - name: Uložit test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-baseline-${{ github.sha }}
+          path: artifacts/baseline/
+          if-no-files-found: warn
+          retention-days: 14

@@ -28,7 +28,7 @@ npm run build
 npm run lint
 ```
 
-Tyto příkazy nebyly importem potvrzeny jako úspěšné. RFU běh musí projít projektní kvótou a vzniknout z evidence wrapperu; přímý běh v lokálním vývojovém prostředí není automaticky důkaz z Contabo.
+Příkazy prošly při opravě základu; podrobnosti a smoke testy viz [BASELINE_VALIDATION.md](BASELINE_VALIDATION.md). Výsledek aktuálního SHA vždy ověřit v CI. RFU běh musí projít projektní kvótou a vzniknout z evidence wrapperu; přímý běh v lokálním vývojovém prostředí není automaticky důkaz z Contabo.
 
 Testovat podle změny: nejprve zdroj/Unit, pak integraci, balík/instalaci a skutečný cíl podle potřeby. TESTED_LOCAL, TESTED_TARGET, provozní stav a ACCEPTED jsou odlišné osy.
 

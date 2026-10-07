@@ -2,6 +2,8 @@
 
 Podklad: přiložený ZIP a RFU main SHA a8f25138bc6999c1838c1b4f0e4d76dab03e3cdb. Jde o kontrolu zdrojů, nikoli live audit Contabo či úspěšný build.
 
+Nálezy níže popisují vstupní ZIP. Následné opravy a jejich skutečné testy uvádí [BASELINE_VALIDATION.md](BASELINE_VALIDATION.md); opravené položky z této historické tabulky automaticky znovu neotevírat.
+
 ## Doporučení
 
 Zachovat React/Vite/Tailwind a .NET 10. Začít jedním modulárním backendem a jednou databází Portalu. InfoPortal bude jeho úvodní modul, nikoli nový web. Python/FastAPI, Redis a samostatný AI Gateway proces zatím nevytvářet; nejprve doložit potřebu a existující RFU kontrakty.

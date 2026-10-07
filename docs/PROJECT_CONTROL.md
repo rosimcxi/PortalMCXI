@@ -20,12 +20,12 @@ Portal používá maximálně 30 % RFU. Podrobnosti a současná mezera ve vynuc
 
 | Oblast | Stav | Důkaz / omezení |
 |---|---|---|
-| Zdrojové soubory a dokumentace ZIPu | Připravený import | docs/IMPORT.md |
+| Zdrojové soubory a dokumentace ZIPu | Import publikován | import 10ead2e; MorningInfo main f6f5b4d; docs/IMPORT.md |
 | RFU řídicí dokumentace | Referenční snímek | docs/rfu/SOURCE_MANIFEST.json |
 | React/Vite/Tailwind | Ve zdrojích | frontend/package.json |
 | .NET 10 | Ve zdrojích | backend/PortalMCXIBackend/PortalMCXIBackend.csproj |
 | PostgreSQL 16 | Deklarováno v Compose | skutečný server zatím UNKNOWN |
-| Build a funkčnost aplikace | UNKNOWN | import není potvrzení sestavení |
+| Build a základní API | Opravy reconciliovány; CI PENDING | docs/BASELINE_RECONCILIATION.md; target zůstává UNKNOWN |
 | Stav Contabo a veřejné služby | UNKNOWN | nutný read-only audit přes RFU |
 | Kvóta RFU 30 % | Politika definována; runtime PENDING | bez důkazu vynucení RFU práci nespouštět |
 | Nasazení | Neprovedeno tímto importem | DB a produkce se nemění |
@@ -41,6 +41,7 @@ Tatvy navázat na skutečný místní východ Slunce. Numerologie, tatvy a kondi
 ## Rozcestník
 
 - [Pravidla vývoje](DEVELOPMENT.md)
+- [Ověření sestavitelného základu](BASELINE_VALIDATION.md)
 - [Limit zdrojů RFU](RFU_RESOURCE_POLICY.md)
 - [Převzatá dokumentace RFU](rfu/README.md)
 - [Evidence importu](IMPORT.md)

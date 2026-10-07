@@ -1,5 +1,9 @@
 # Doporučené pokračování
 
+## Aktuální pokračování – 7. 10. 2026
+
+MorningInfo a dashboard už jsou na main f6f5b4d. Neimplementovat je znovu. Místní opravy staršího importu jsou reconciliovány se současným modulem: viz [BASELINE_RECONCILIATION.md](BASELINE_RECONCILIATION.md). Nejbližší krok je ověřit CI této změny, potom skutečnou kvótu RFU a cílovou topologii. Persistenci, časované collectory, historii ranních/večerních zpráv a pylové informace teprve dokončit. Aktuální MorningInfo stále sbírá externí data při požadavku; cílové oddělení sběru od čtení není hotové.
+
 ## Pořadí
 
 | Pořadí | Malá proveditelná část | Výstup a podmínka dokončení |

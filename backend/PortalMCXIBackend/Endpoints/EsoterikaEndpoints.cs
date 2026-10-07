@@ -1,3 +1,4 @@
+using System.Globalization;
 using PortalMCXIBackend.Services;
 
 namespace PortalMCXIBackend.Endpoints;
@@ -30,7 +31,7 @@ public static class EsoterikaEndpoints
             string birthDateStr,
             PersonalCalculationService calculations) =>
         {
-            if (!DateOnly.TryParse(birthDateStr, out var birthDate))
+            if (!DateOnly.TryParseExact(birthDateStr, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var birthDate) || birthDate > DateOnly.FromDateTime(DateTime.Today))
             {
                 return Results.BadRequest(
                     "Neplatný formát data. Použijte RRRR-MM-DD.");
@@ -49,7 +50,7 @@ public static class EsoterikaEndpoints
             string birthDateStr,
             PersonalCalculationService calculations) =>
         {
-            if (!DateOnly.TryParse(birthDateStr, out var birthDate))
+            if (!DateOnly.TryParseExact(birthDateStr, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var birthDate) || birthDate > DateOnly.FromDateTime(DateTime.Today))
             {
                 return Results.BadRequest(
                     "Neplatný formát data. Použijte RRRR-MM-DD.");
@@ -65,3 +66,4 @@ public static class EsoterikaEndpoints
         .WithName("GetKondiciogram");
     }
 }
+

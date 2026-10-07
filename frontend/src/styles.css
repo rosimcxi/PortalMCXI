@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* Zachování class-based tmavého režimu původního UI. */
+@custom-variant dark (&:where(.dark, .dark *));
