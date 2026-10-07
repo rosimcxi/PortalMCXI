@@ -33,27 +33,28 @@ services:
       - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - PORTAL_LOCATION_NAME=${PORTAL_LOCATION_NAME:-}
+      - PORTAL_LOCATION_LAT=${PORTAL_LOCATION_LAT:-}
+      - PORTAL_LOCATION_LON=${PORTAL_LOCATION_LON:-}
+      - PORTAL_TIMEZONE=${PORTAL_TIMEZONE:-Europe/Prague}
+      - PORTAL_BIRTH_DATE=${PORTAL_BIRTH_DATE:-}
     depends_on:
       - db
     networks:
       - portal_network
       - npm_network
 
-  # Frontend - React / Vite
+  # Frontend - sestavený React obsluhovaný Nginxem
   frontend:
-    image: node:20-alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: portal_frontend
     restart: always
-    working_dir: /app
     ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "5173:80"
     environment:
-      - WATCHPACK_POLLING=true
-      - HOST=0.0.0.0
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+      - API_UPSTREAM=http://api:5000
     depends_on:
       - api
     networks:

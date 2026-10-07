@@ -14,7 +14,7 @@ namespace PortalMCXIBackend.Endpoints;
 public static class SpravaProjektuEndpoints
 {
     private static readonly ConcurrentBag<ProjectDetail> _projects = new();
-    private static int _nextProjectId = 1;
+    private static int _nextProjectId = 0;
 
     public static void MapSpravaProjektuEndpoints(this WebApplication app)
     {
@@ -22,12 +22,12 @@ public static class SpravaProjektuEndpoints
 
         if (_projects.IsEmpty)
         {
-            _projects.Add(new ProjectDetail(_nextProjectId++, "PortalMCXI", "Komplexní dashboard a API server na VPS. Hlavní řídící centrum mých aplikací a modulů.", "V řešení", new DateTime(2026, 6, 30), "[https://rosimcxi.eu](https://rosimcxi.eu)"));
-            _projects.Add(new ProjectDetail(_nextProjectId++, "Lokální DB Asistent", "Nástroj pro generování AI SQL dotazů (Python/C#)", "Plánováno", null, null));
-            _projects.Add(new ProjectDetail(_nextProjectId++, "Jóga s Miškou", "E-shop a rezervační systém web", "Dokončeno", new DateTime(2025, 12, 1), "[https://jogasmiskou.cz](https://jogasmiskou.cz)"));
-            _projects.Add(new ProjectDetail(_nextProjectId++, "Esoterické nástroje", "Moduly pro Tatvy, numerologii, kondiciogramy (biorytmy) a generování Nostradamových predikcí.", "V provozu", null, "[https://rosimcxi.eu/#esoterika](https://rosimcxi.eu/#esoterika)"));
-            _projects.Add(new ProjectDetail(_nextProjectId++, "Nástroje pro převod dat", "Univerzální konvertory (XML, CSV)", "Ideace", null, null));
-            _projects.Add(new ProjectDetail(_nextProjectId++, "Párty hry a výuka", "Interaktivní hry pro více hráčů a konfigurovatelné testy.", "Plánováno", null, null));
+            _projects.Add(new ProjectDetail(Interlocked.Increment(ref _nextProjectId), "PortalMCXI", "Komplexní dashboard a API server na VPS. Hlavní řídící centrum mých aplikací a modulů.", "V řešení", new DateTime(2026, 6, 30), "[https://rosimcxi.eu](https://rosimcxi.eu)"));
+            _projects.Add(new ProjectDetail(Interlocked.Increment(ref _nextProjectId), "Lokální DB Asistent", "Nástroj pro generování AI SQL dotazů (Python/C#)", "Plánováno", null, null));
+            _projects.Add(new ProjectDetail(Interlocked.Increment(ref _nextProjectId), "Jóga s Miškou", "E-shop a rezervační systém web", "Dokončeno", new DateTime(2025, 12, 1), "[https://jogasmiskou.cz](https://jogasmiskou.cz)"));
+            _projects.Add(new ProjectDetail(Interlocked.Increment(ref _nextProjectId), "Esoterické nástroje", "Moduly pro Tatvy, numerologii, kondiciogramy (biorytmy) a generování Nostradamových predikcí.", "V provozu", null, "[https://rosimcxi.eu/#esoterika](https://rosimcxi.eu/#esoterika)"));
+            _projects.Add(new ProjectDetail(Interlocked.Increment(ref _nextProjectId), "Nástroje pro převod dat", "Univerzální konvertory (XML, CSV)", "Ideace", null, null));
+            _projects.Add(new ProjectDetail(Interlocked.Increment(ref _nextProjectId), "Párty hry a výuka", "Interaktivní hry pro více hráčů a konfigurovatelné testy.", "Plánováno", null, null));
         }
 
         group.MapGet("/", () => 
@@ -42,7 +42,7 @@ public static class SpravaProjektuEndpoints
                 return Results.BadRequest("Název projektu je povinný.");
 
             var newProject = new ProjectDetail(
-                _nextProjectId++, 
+                Interlocked.Increment(ref _nextProjectId), 
                 request.Name, 
                 request.Description ?? "", 
                 "Plánováno", 

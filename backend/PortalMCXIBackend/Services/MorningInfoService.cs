@@ -138,7 +138,8 @@ public sealed class MorningInfoService(
         var birthDateText =
             Environment.GetEnvironmentVariable("PORTAL_BIRTH_DATE");
 
-        if (DateOnly.TryParse(birthDateText, out var birthDate))
+        if (DateOnly.TryParseExact(birthDateText, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var birthDate) &&
+            birthDate <= DateOnly.FromDateTime(localNow))
         {
             var localDate = DateOnly.FromDateTime(localNow);
 
@@ -257,6 +258,7 @@ public sealed class MorningInfoService(
             ex is HttpRequestException or
             TaskCanceledException or
             JsonException or
+            KeyNotFoundException or
             InvalidOperationException)
         {
             errors.Add($"Open-Meteo: {ex.GetType().Name}: {ex.Message}");
@@ -306,6 +308,7 @@ public sealed class MorningInfoService(
             ex is HttpRequestException or
             TaskCanceledException or
             JsonException or
+            KeyNotFoundException or
             InvalidOperationException)
         {
             errors.Add($"Gold API: {ex.GetType().Name}: {ex.Message}");
@@ -432,3 +435,4 @@ public sealed class MorningInfoService(
         }
     }
 }
+

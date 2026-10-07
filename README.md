@@ -8,6 +8,8 @@ Aktuální projektový rozcestník: [řídicí dokument](docs/PROJECT_CONTROL.md
 
 Portal smí využívat nejvýše **30 % zdrojů RFU**. [Politika a stav vynucení](docs/RFU_RESOURCE_POLICY.md). Dokud vynucení není ověřeno, RFU Portal práce se nespouští.
 
+Backend a frontend mají opravený sestavitelný základ: [výsledky a postup spuštění](docs/BASELINE_VALIDATION.md). Ukázkové moduly jsou dostupné jen v Development; databázová persistence ani produkční autentizace tím nejsou hotové.
+
 Níže je původní dokumentace. Popis Azure DevOps, systemd, cest a nasazení je historický podklad; skutečný stav Contabo zatím nebyl ověřen. Import neprovádí nasazení ani nepotvrzuje funkčnost aplikace.
 
 ---
@@ -248,4 +250,3 @@ Agent je offline:
 Připoj se na VPS a spusť: sudo systemctl status vsts.agent.ROSI-MCXI.Contabo.VPS-Contabo.service. Pokud neběží, restartuj ho: sudo systemctl restart vsts.agent.*
 Agent hlásí chybu VS30063 (You are not authorized):
 Vypršel ti platný PAT token. Vygeneruj nový v Azure DevOps, odinstaluj službu (sudo ./svc.sh uninstall), odeber konfiguraci (./config.sh remove) a proces konfigurace opakuj s novým tokenem.
-

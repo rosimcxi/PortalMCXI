@@ -7,16 +7,12 @@
 // ZMĚNY:    Odstraněny padající ikony médií. Návrat k centrálnímu UI.
 // =====================================================================
 
+import { getJson } from './api';
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, Globe, Activity, Terminal, 
   ChevronRight, Check, ExternalLink, Heart, Sparkles, Clock, User
 } from 'lucide-react';
-
-export default function Roman() {
-  const [activeProf, setActiveProf] = useState('all');
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   // Záchranná data pro případ, že by API zrovna nebylo dostupné
   const FALLBACK_PROJECTS = [
@@ -24,6 +20,11 @@ export default function Roman() {
     { id: 'casna', name: 'CasNa (Tracker)', url: 'https://api.rosimcxi.eu/scalar/v1', desc: 'Sledování času a projektů', icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50' },
     { id: 'tatvy', name: 'Esoterika & Tatvy', url: 'https://wisdomes.eu', desc: 'Výpočty tater a numerologie', icon: Sparkles, color: 'text-purple-500', bg: 'bg-purple-50' }
   ];
+
+export default function Roman() {
+  const [activeProf, setActiveProf] = useState('all');
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Kategorie profesí
   const PROFESSIONS = [
@@ -49,8 +50,7 @@ export default function Roman() {
 
   // Načtení projektů z našeho C# API
   useEffect(() => {
-    fetch('https://api.rosimcxi.eu/api/projects')
-      .then(res => res.json())
+    getJson('/api/projects')
       .then(data => {
         if(data && data.length > 0) {
           const PROJECT_STYLES = {

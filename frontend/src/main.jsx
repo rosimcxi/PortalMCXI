@@ -9,6 +9,8 @@
 
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import './styles.css';
+import { getJson } from './api';
 import { 
   LayoutDashboard, Globe, Database, Server, Activity, 
   Users, Mail, Cpu, Check, RefreshCw, 
@@ -44,7 +46,7 @@ const LogView = ({ onBack }) => {
     try {
       const res = await fetch('/build_info.json?t=' + Date.now());
       if (res.ok) setData(await res.json());
-    } catch (e) { 
+    } catch { 
       console.error("Diagnostika nedostupná."); 
     } finally { 
       setLoading(false); 
@@ -221,7 +223,6 @@ const RomanView = ({ projects }) => (
   </div>
 );
 
-
 const MorningPanel = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -232,15 +233,9 @@ const MorningPanel = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/info/morning', {
+      setData(await getJson('/api/info/morning', {
         headers: { Accept: 'application/json' }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      setData(await response.json());
+      }));
     } catch (err) {
       setError(err?.message || 'Ranní přehled není dostupný.');
     } finally {
@@ -425,7 +420,7 @@ const MorningPanel = () => {
   );
 };
 
-const DashboardView = ({ projects }) => (
+const DashboardView = ({ projects, projectsStatus, apiStatus }) => (
   <div className="min-h-screen bg-slate-50 dark:bg-[#010409] flex flex-col lg:flex-row font-sans selection:bg-indigo-500/30">
     <aside className="w-full lg:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-8 flex flex-col shadow-2xl">
       <div className="flex items-center gap-4 mb-12">
@@ -439,7 +434,7 @@ const DashboardView = ({ projects }) => (
         </button>
       </nav>
       <nav className="space-y-1.5">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-6 mb-4">Moje Projekty (z API)</p>
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-6 mb-4">Moje projekty · {projectsStatus}</p>
         {projects.map(p => (
           <a key={p.id} href={p.url} target="_blank" rel="noreferrer" className="w-full flex items-center justify-between px-6 py-4 rounded-3xl text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group border border-transparent">
             <div className="flex items-center gap-4">
@@ -451,8 +446,8 @@ const DashboardView = ({ projects }) => (
         ))}
       </nav>
       <div className="mt-auto pt-8 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[10px] text-slate-400 font-black uppercase tracking-widest px-4">
-         <span>62.84.181.247</span>
-         <ShieldCheck size={16} className="text-emerald-500" />
+         <span>PortalMCXI</span>
+         <ShieldCheck size={16} className="text-slate-400" />
       </div>
     </aside>
 
@@ -496,11 +491,11 @@ const DashboardView = ({ projects }) => (
           <div className="bg-slate-900 p-10 rounded-[4rem] text-white flex flex-col justify-between border border-slate-800 shadow-2xl relative overflow-hidden">
              <div className="bg-indigo-500/10 p-4 rounded-2xl border border-indigo-500/20 w-fit mb-4 relative z-10"><Cpu className="text-indigo-400" size={32} /></div>
              <div className="relative z-10">
-                <h4 className="text-2xl font-black mb-2 italic">Runtime Active</h4>
-                <div className="flex items-center gap-3 text-emerald-500 text-[11px] font-black uppercase tracking-[0.2em]">
-                   <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50"></span> VPS Online
+                <h4 className="text-2xl font-black mb-2 italic">Stav API</h4>
+                <div className="flex items-center gap-3 text-slate-300 text-[11px] font-black uppercase tracking-[0.2em]">
+                   {apiStatus}
                 </div>
-                <p className="text-[10px] text-slate-500 mt-6 font-bold leading-relaxed tracking-wide italic">Ubuntu 24.04 &bull; .NET 10.0 &bull; Docker Compose</p>
+                <p className="text-[10px] text-slate-500 mt-6 font-bold leading-relaxed tracking-wide italic">Stav Contabo a RFU dosud neověřen.</p>
              </div>
              <Activity className="absolute -left-10 -bottom-10 text-slate-800/10 w-48 h-48" />
           </div>
@@ -512,6 +507,8 @@ const DashboardView = ({ projects }) => (
 export default function App() {
   const [view, setView] = useState('home');
   const [projects, setProjects] = useState(FALLBACK_PROJECTS);
+  const [projectsStatus, setProjectsStatus] = useState('načítání');
+  const [apiStatus, setApiStatus] = useState('Ověřování');
 
   // Zajištění navigace hashů
   useEffect(() => {
@@ -528,10 +525,14 @@ export default function App() {
 
   // Tahání dat z živého .NET API!
   useEffect(() => {
-    fetch('https://api.rosimcxi.eu/api/projects')
-      .then(res => res.json())
+    const controller = new AbortController();
+    getJson('/api/health', { signal: controller.signal })
+      .then(data => setApiStatus(data.status === 'OK' ? 'Dostupné' : 'Neznámý stav'))
+      .catch(error => { if (error.name !== 'AbortError') setApiStatus('Nedostupné'); });
+    getJson('/api/projects', { signal: controller.signal })
       .then(data => {
-        if(data && data.length > 0) {
+        if (!Array.isArray(data)) throw new Error('Neplatný seznam projektů');
+        {
           // Mapování ikon podle ID, které poslal C#
           const PROJECT_STYLES = {
             1: { icon: Heart, color: 'text-rose-500', bg: 'bg-rose-50' },
@@ -550,15 +551,17 @@ export default function App() {
             bg: PROJECT_STYLES[p.id]?.bg || 'bg-slate-50'
           }));
           setProjects(styled);
+          setProjectsStatus('z API');
         }
       })
-      .catch(err => console.log("Jedeme v offline režimu z přednastavených dat.", err));
+      .catch(error => { if (error.name !== 'AbortError') setProjectsStatus('náhradní odkazy'); });
+    return () => controller.abort();
   }, []);
 
   if (view === 'logs') return <LogView onBack={() => { window.location.hash = ''; }} />;
   if (view === 'roman') return <RomanView projects={projects} />;
 
-  return <DashboardView projects={projects} />;
+  return <DashboardView projects={projects} projectsStatus={projectsStatus} apiStatus={apiStatus} />;
 }
 
 if (typeof document !== 'undefined') {

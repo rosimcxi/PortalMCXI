@@ -9,6 +9,11 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
+    proxy: {
+      '/api': 'http://127.0.0.1:5000',
+      '/openapi': 'http://127.0.0.1:5000',
+      '/scalar': 'http://127.0.0.1:5000',
+    },
     // Povolení domén pro přístup k vývojovému serveru nebo při proxyování
     allowedHosts: [
       'roman.rosimcxi.eu',
